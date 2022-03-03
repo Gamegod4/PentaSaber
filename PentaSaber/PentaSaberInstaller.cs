@@ -13,11 +13,14 @@ namespace PentaSaber
     {
         public override void InstallBindings()
         {
-            Plugin.Log?.Info("Binding dependencies");
-            //Container.BindInterfacesAndSelfTo<KeyboardInputController>().AsTransient();
-            Container.Bind<IInputController>().To<StandardInputController>().AsTransient();
-            Container.Bind<IPentaColorManager>().To<StandardColorManager>().AsTransient();
-            Container.BindInterfacesAndSelfTo<PentaSaberController>().AsSingle();
+            if(Plugin.Config.Enabled)
+            {
+                Plugin.Log?.Info("Binding dependencies");
+                //Container.BindInterfacesAndSelfTo<KeyboardInputController>().AsTransient();
+                Container.Bind<IInputController>().To<StandardInputController>().AsTransient();
+                Container.Bind<IPentaColorManager>().To<StandardColorManager>().AsTransient();
+                Container.BindInterfacesAndSelfTo<PentaSaberController>().AsSingle();
+            }
         }
     }
 }

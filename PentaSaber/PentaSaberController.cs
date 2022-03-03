@@ -1,4 +1,5 @@
-﻿using SiraUtil.Sabers;
+﻿using PentaSaber.HarmonyPatches.Manager;
+using SiraUtil.Sabers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +74,7 @@ namespace PentaSaber
             _inputController = inputController;
             _modelManager = modelManager;
             _saberManager = saberManager;
+            HarmonyManager.ApplyDefaultPatches();
         }
         public void Initialize()
         {
@@ -113,6 +115,7 @@ namespace PentaSaber
         {
             Plugin.Log.Debug($"Disposing PentaSaberController, {_activeNotes.Count} notes remaining in dictionary.");
             _activeNotes.Clear();
+            HarmonyManager.UnpatchAll();
         }
 
         public void Tick()

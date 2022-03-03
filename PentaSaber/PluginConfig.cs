@@ -9,18 +9,18 @@ namespace PentaSaber
 {
     public class PluginConfig
     {
-        public virtual bool Enabled { get; set; }
+        public virtual bool Enabled { get; set; } = true;
         public virtual Color SaberA1 { get; set; } = Color.red;
         public virtual Color SaberA2 { get; set; } = Color.magenta;
         public virtual Color SaberB1 { get; set; } = Color.blue;
         public virtual Color SaberB2 { get; set; } = Color.green;
         public virtual Color Neutral { get; set; } = Color.grey;
 
-        public bool AllowDualNeutral { get; } = false;
-        public int NeutralBufferMin { get; } = 3;
-        public int NeutralBufferMax { get; } = 3;
-        public int MinColorDuration { get; } = 5;
-        public int MaxColorDuration { get; } = 20;
+        public bool AllowDualNeutral { get; set; } = false;
+        public int NeutralBufferMin { get; set; } = 3;
+        public int NeutralBufferMax { get; set; } = 3;
+        public int MinColorDuration { get; set; } = 5;
+        public int MaxColorDuration { get; set; } = 20;
 
         public Color GetColor(PentaNoteType pentaNoteType)
         {

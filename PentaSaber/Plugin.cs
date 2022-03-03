@@ -26,7 +26,6 @@ namespace PentaSaber
             Config = conf.Generated<PluginConfig>();
             zenjector.UseLogger(logger);
             zenjector.Install<PentaSaberInstaller>(Location.StandardPlayer);
-            HarmonyManager.ApplyDefaultPatches();
         }
 
 
