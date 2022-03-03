@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This file contains project properties used by the build. -->
+<Project>
+	<PropertyGroup>
+		<ImportBSMTTargets>True</ImportBSMTTargets>
+		<BSMTProjectType>BSIPA</BSMTProjectType>
+		<GenerateManifest>True</GenerateManifest>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(GenerateManifest)' == 'True'">
+		<RequiresBsipa>True</RequiresBsipa>
+		<PluginId>PentaSaber</PluginId>
+		<PluginName>PentaSaber</PluginName>
+		<Authors>Zingabopp</Authors>
+		<Version>0.0.1</Version>
+		<GameVersion>1.19.1</GameVersion>
+		<Description>Five different note colors.</Description>
+		<ProjectSource></ProjectSource>
+		<ProjectHome></ProjectHome>
+		<Donate>https://ko-fi.com/zingabopp</Donate>
+	</PropertyGroup>
+	<ItemGroup>
+		<DependsOn Include="BSIPA" Version="^4.2.1" />
+		<DependsOn Include="SiraUtil" Version="^3.0.3" />
+	</ItemGroup>
+</Project>

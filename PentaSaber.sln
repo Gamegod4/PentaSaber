@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PentaSaber", "PentaSaber\PentaSaber.csproj", "{B8CA07DA-DE6C-4646-99E2-6845FC21BBEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8CA07DA-DE6C-4646-99E2-6845FC21BBEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8CA07DA-DE6C-4646-99E2-6845FC21BBEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8CA07DA-DE6C-4646-99E2-6845FC21BBEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8CA07DA-DE6C-4646-99E2-6845FC21BBEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B6DBCB94-098D-4613-9504-D71B5419378B}
+	EndGlobalSection
+EndGlobal
