@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static BeatmapSaveData;
 
 namespace PentaSaber.ColorManagers
 {
@@ -66,7 +65,7 @@ namespace PentaSaber.ColorManagers
             public int LastNeutral { get; private set; }
             public bool Increment(bool blockTransition)
             {
-                Plugin.Log.Debug($"{ColorType} : {CurrentType} : {CurrentCount}/{CurrentDuration}{(blockTransition ? " (transition blocked)" : "")}");
+                //Plugin.Log.Debug($"{ColorType} : {CurrentType} : {CurrentCount}/{CurrentDuration}{(blockTransition ? " (transition blocked)" : "")}");
                 CurrentCount++;
                 bool previousNeutral = CurrentType == PentaNoteType.Neutral;
                 bool transitioned = false;
@@ -131,8 +130,8 @@ namespace PentaSaber.ColorManagers
                                     && otherTracker.CurrentType == PentaNoteType.Neutral
                                     && noteTracker.NextType == PentaNoteType.Neutral
                                     && otherTracker.LastNeutral < 5;
-            if (blockTransition)
-                Plugin.Log.Debug($"Blocking transition for {currentType}");
+            //if (blockTransition)
+            //    Plugin.Log.Debug($"Blocking transition for {currentType}");
             bool transitioned = noteTracker.Increment(blockTransition);
 
 

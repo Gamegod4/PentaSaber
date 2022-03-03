@@ -15,7 +15,7 @@ namespace PentaSaber
         {
             if(Plugin.Config.Enabled)
             {
-                Plugin.Log?.Info("Binding dependencies");
+                Plugin.Log?.Debug("Binding dependencies");
                 //Container.BindInterfacesAndSelfTo<KeyboardInputController>().AsTransient();
                 Container.Bind<IInputController>().To<StandardInputController>().AsTransient();
                 Container.Bind<IPentaColorManager>().To<StandardColorManager>().AsTransient();

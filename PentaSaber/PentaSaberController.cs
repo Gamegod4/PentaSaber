@@ -37,7 +37,7 @@ namespace PentaSaber
                     return;
                 }
                 _modelManager.SetColor(SaberA, Plugin.Config.GetColor(value));
-                Plugin.Log.Error($"SaberA is {value} | {SaberAType}");
+                //Plugin.Log.Error($"SaberA is {value} | {SaberAType}");
             }
         }
 
@@ -58,7 +58,7 @@ namespace PentaSaber
                 }
                 _modelManager.SetColor(SaberB, Plugin.Config.GetColor(value));
 
-                Plugin.Log.Error($"SaberB is {value} | {SaberBType}");
+                //Plugin.Log.Error($"SaberB is {value} | {SaberBType}");
             }
         }
 
@@ -122,7 +122,7 @@ namespace PentaSaber
         {
             if(Instance != this)
             {
-                Plugin.Log.Error($"WRONG INSTANCE ROOOOOOOOAAAAAAR");
+                Plugin.Log.Error($"WRONG INSTANCE");
                 Instance = this;
             }
             SaberAType = _inputController.SaberAToggled ? PentaNoteType.ColorA2 : PentaNoteType.ColorA1;

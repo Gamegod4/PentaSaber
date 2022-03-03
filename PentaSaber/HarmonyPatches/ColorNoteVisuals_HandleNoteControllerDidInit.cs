@@ -32,7 +32,7 @@ namespace PentaSaber.HarmonyPatches
                 return;
             PentaNoteType pentaNoteType = pc.SetNoteType(gnc);
             ____noteColor = Plugin.Config.GetColor(pentaNoteType);
-            Plugin.Log.Info($"Setting note '{gnc.GetInstanceID()}' to {pentaNoteType}");
+            //Plugin.Log.Info($"Setting note '{gnc.GetInstanceID()}' to {pentaNoteType}");
             foreach (var m in ____materialPropertyBlockControllers)
             {
                 m.materialPropertyBlock.SetColor(Shader.PropertyToID("_Color"), ____noteColor);

@@ -71,7 +71,7 @@ namespace PentaSaber.HarmonyPatches.Manager
                     patchTypeName = PostfixMethod.method.DeclaringType?.Name;
                 else if (TranspilerMethod != null)
                     patchTypeName = TranspilerMethod.method.DeclaringType?.Name;
-                Plugin.Log?.Debug($"Harmony patching '{OriginalMethod.Name}' with '{patchTypeName}'");
+                Plugin.Log?.Debug($"Harmony patching '{OriginalMethod.DeclaringType.Name}.{OriginalMethod.Name}' with '{patchTypeName}'");
                 harmony.Patch(OriginalMethod, PrefixMethod, PostfixMethod, TranspilerMethod);
                 IsApplied = true;
                 HarmonyManager.AppliedPatches.Add(this);
@@ -79,7 +79,7 @@ namespace PentaSaber.HarmonyPatches.Manager
             }
             catch (Exception e)
             {
-                Plugin.Log?.Error($"Unable to patch method {OriginalMethod.Name}: {e.Message}");
+                Plugin.Log?.Error($"Unable to patch method '{OriginalMethod.DeclaringType.Name}.{OriginalMethod.Name}': {e.Message}");
                 Plugin.Log?.Debug(e);
                 return false;
             }
@@ -96,7 +96,7 @@ namespace PentaSaber.HarmonyPatches.Manager
                 patchTypeName = PostfixMethod.method.DeclaringType?.Name;
             else if (TranspilerMethod != null)
                 patchTypeName = TranspilerMethod.method.DeclaringType?.Name;
-            Plugin.Log?.Debug($"Removing Harmony patch '{patchTypeName}' from '{OriginalMethod.Name}'");
+            Plugin.Log?.Debug($"Removing Harmony patch '{patchTypeName}' from '{OriginalMethod.DeclaringType.Name}.{OriginalMethod.Name}'");
             if (PrefixMethod != null)
                 harmony.Unpatch(OriginalMethod, PrefixMethod.method);
             if (PostfixMethod != null)

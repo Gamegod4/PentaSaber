@@ -37,23 +37,23 @@ namespace PentaSaber.HarmonyPatches
             }
             bool finished = false;
             bool readyToInsert = false;
-            Plugin.Log.Critical($"Starting Transpile");
+            //Plugin.Log.Critical($"Starting Transpile");
             foreach (var code in instructions)
             {
-                Plugin.Log.Info($"   {code}");
+                //Plugin.Log.Info($"   {code}");
                 if (!finished)
                 {
                     if (!readyToInsert)
                     {
                         if(code.opcode == OpCodes.Call && code.Calls(_getBasicCutInfoMethod))
                         {
-                            Plugin.Log.Critical($"ReadyToInsert");
+                            //Plugin.Log.Critical($"ReadyToInsert");
                             readyToInsert = true;
                         }
                     }
                     else
                     {
-                        Plugin.Log.Critical($"Inserting OpCodes");
+                        //Plugin.Log.Critical($"Inserting OpCodes");
                         yield return new CodeInstruction(OpCodes.Ldarg_0); // Load GameNoteController (this)
                         yield return new CodeInstruction(OpCodes.Ldarg_1); // Load Argument 1 (Saber)
                         yield return new CodeInstruction(OpCodes.Ldloc_3); // Load flag3 (saberTypeOk)
@@ -68,7 +68,7 @@ namespace PentaSaber.HarmonyPatches
 
         static bool CutIsGood(GameNoteController gameNote, Saber saber, bool saberTypeOk)
         {
-            Plugin.Log.Debug($"Executing CutIsGood: {gameNote?.GetInstanceID()} | {saber?.name} | {saber?.saberType} | {saberTypeOk}");
+            //Plugin.Log.Debug($"Executing CutIsGood: {gameNote?.GetInstanceID()} | {saber?.name} | {saber?.saberType} | {saberTypeOk}");
             PentaSaberController? controller = PentaSaberController.Instance;
             if (gameNote == null)
             {
@@ -90,7 +90,7 @@ namespace PentaSaber.HarmonyPatches
                 PentaNoteType pentaSaberType = controller.GetCurrentSaberType(saber.saberType);
                 bool isGood = pentaNoteType == pentaSaberType
                     || pentaNoteType == PentaNoteType.Neutral;
-                Plugin.Log.Info($"Cutting note '{gameNote.GetInstanceID()}' ({pentaNoteType}) with saber '{pentaSaberType}' - Good: {isGood}");
+                //Plugin.Log.Info($"Cutting note '{gameNote.GetInstanceID()}' ({pentaNoteType}) with saber '{pentaSaberType}' - Good: {isGood}");
                 return isGood;
             }
             else
