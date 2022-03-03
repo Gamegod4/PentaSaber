@@ -12,7 +12,7 @@ namespace PentaSaber
     public class Plugin
     {
         internal static Plugin Instance { get; private set; } = null!;
-        internal static PluginConfig Config { get; private set; }
+        internal static PluginConfig Config { get; private set; } = null!;
         /// <summary>
         /// Use to send log messages through BSIPA.
         /// </summary>

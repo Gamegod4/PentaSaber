@@ -17,10 +17,10 @@ namespace PentaSaber
         public virtual Color Neutral { get; set; } = Color.grey;
 
         public bool AllowDualNeutral { get; set; } = false;
-        public int NeutralBufferMin { get; set; } = 3;
+        public int NeutralBufferMin { get; set; } = 1;
         public int NeutralBufferMax { get; set; } = 3;
-        public int MinColorDuration { get; set; } = 5;
-        public int MaxColorDuration { get; set; } = 20;
+        public int MinColorDuration { get; set; } = 8;
+        public int MaxColorDuration { get; set; } = 30;
 
         public Color GetColor(PentaNoteType pentaNoteType)
         {

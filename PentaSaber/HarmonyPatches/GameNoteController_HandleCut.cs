@@ -27,7 +27,7 @@ namespace PentaSaber.HarmonyPatches
     {
         private static readonly MethodInfo _getBasicCutInfoMethod = typeof(NoteBasicCutInfoHelper)
             .GetMethod(nameof(NoteBasicCutInfoHelper.GetBasicCutInfo));
-        private static readonly MethodInfo _cutIsGoodMethod = SymbolExtensions.GetMethodInfo(() => CutIsGood(null, null, false));
+        private static readonly MethodInfo _cutIsGoodMethod = SymbolExtensions.GetMethodInfo(() => CutIsGood(null!, null!, false));
 
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {

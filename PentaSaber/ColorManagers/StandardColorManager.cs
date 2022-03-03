@@ -10,17 +10,23 @@ namespace PentaSaber.ColorManagers
     {
         private class NoteTypeTracker
         {
+            private readonly Random random;
             private const int maxIndex = 3;
             public bool allowDualNeutral { get; } = false;
-            public int neutralBufferMin { get; } = 3;
+            public int neutralBufferMin { get; } = 1;
             public int neutralBufferMax { get; } = 3;
             public int minColorDuration { get; } = 5;
             public int maxColorDuration { get; } = 20;
             public readonly ColorType ColorType;
+            private int RandomInt(int min, int max)
+            {
+                return random.Next(min, max);
+            }
             public NoteTypeTracker(ColorType colorType)
             {
                 ColorType = colorType;
-                CurrentDuration = UnityEngine.Random.Range(minColorDuration, maxColorDuration + 1);
+                random = new Random((int)DateTime.Now.Ticks + ((int)colorType * 13));
+                CurrentDuration = RandomInt(minColorDuration, maxColorDuration + 1);
                 ResetNeutralBuffer();
                 CurrentType = colorType == ColorType.ColorA ? PentaNoteType.ColorA1 : PentaNoteType.ColorB1;
                 if (NeutralBuffer > 0)
@@ -65,7 +71,7 @@ namespace PentaSaber.ColorManagers
             public int LastNeutral { get; private set; }
             public bool Increment(bool blockTransition)
             {
-                //Plugin.Log.Debug($"{ColorType} : {CurrentType} : {CurrentCount}/{CurrentDuration}{(blockTransition ? " (transition blocked)" : "")}");
+                Plugin.Log.Debug($"{ColorType} : {CurrentType} : {CurrentCount}/{CurrentDuration}{(blockTransition ? " (transition blocked)" : "")}");
                 CurrentCount++;
                 bool previousNeutral = CurrentType == PentaNoteType.Neutral;
                 bool transitioned = false;
@@ -82,7 +88,7 @@ namespace PentaSaber.ColorManagers
                     {
                         if (previousNeutral)
                             LastNeutral = 1;
-                        CurrentDuration = UnityEngine.Random.Range(minColorDuration, maxColorDuration + 1);
+                        CurrentDuration = RandomInt(minColorDuration, maxColorDuration + 1);
                         ResetNeutralBuffer();
                     }
                     else
@@ -98,7 +104,7 @@ namespace PentaSaber.ColorManagers
             {
                 if (neutralBufferMax >= neutralBufferMin && neutralBufferMax > 0)
                 {
-                    NeutralBuffer = UnityEngine.Random.Range(neutralBufferMin, neutralBufferMax);
+                    NeutralBuffer = RandomInt(neutralBufferMin, neutralBufferMax);
                 }
                 else
                 {
