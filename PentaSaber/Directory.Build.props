@@ -20,7 +20,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<DependsOn Include="BSIPA" Version="^4.2.1" />
-		<DependsOn Include="BS_Utils" Version="^1.11.2" />
+		<DependsOn Include="BS Utils" Version="^1.11.2" />
 		<DependsOn Include="SiraUtil" Version="^3.0.3" />
 	</ItemGroup>
 </Project>
