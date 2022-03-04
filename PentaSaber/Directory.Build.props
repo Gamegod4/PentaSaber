@@ -11,7 +11,7 @@
 		<PluginId>PentaSaber</PluginId>
 		<PluginName>PentaSaber</PluginName>
 		<Authors>Zingabopp</Authors>
-		<Version>0.0.1</Version>
+		<Version>0.0.2</Version>
 		<GameVersion>1.19.1</GameVersion>
 		<Description>Five different note colors.</Description>
 		<ProjectSource></ProjectSource>
@@ -20,6 +20,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<DependsOn Include="BSIPA" Version="^4.2.1" />
+		<DependsOn Include="BS_Utils" Version="^1.11.2" />
 		<DependsOn Include="SiraUtil" Version="^3.0.3" />
 	</ItemGroup>
 </Project>

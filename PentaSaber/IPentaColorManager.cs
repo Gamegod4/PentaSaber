@@ -18,6 +18,10 @@ namespace PentaSaber
         string Name { get; }
         string? Description { get; }
         /// <summary>
+        /// Set to true if score submission should be disabled.
+        /// </summary>
+        bool DisableScoreSubmission { get; }
+        /// <summary>
         /// Gets the next <see cref="PentaNoteType"/> for the given note information.
         /// </summary>
         /// <param name="currentType"></param>

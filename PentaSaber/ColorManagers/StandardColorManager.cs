@@ -15,8 +15,10 @@ namespace PentaSaber.ColorManagers
             public bool allowDualNeutral { get; } = false;
             public int neutralBufferMin { get; } = 1;
             public int neutralBufferMax { get; } = 3;
-            public int minColorDuration { get; } = 5;
-            public int maxColorDuration { get; } = 20;
+            public int minMainColorDuration { get; } = 5;
+            public int maxMainColorDuration { get; } = 20;
+            public int minAltColorDuration { get; } = 5;
+            public int maxAltColorDuration { get; } = 20;
             public readonly ColorType ColorType;
             private int RandomInt(int min, int max)
             {
@@ -26,7 +28,7 @@ namespace PentaSaber.ColorManagers
             {
                 ColorType = colorType;
                 random = new Random((int)DateTime.Now.Ticks + ((int)colorType * 13));
-                CurrentDuration = RandomInt(minColorDuration, maxColorDuration + 1);
+                CurrentDuration = RandomInt(minMainColorDuration, maxMainColorDuration + 1);
                 ResetNeutralBuffer();
                 CurrentType = colorType == ColorType.ColorA ? PentaNoteType.ColorA1 : PentaNoteType.ColorB1;
                 if (NeutralBuffer > 0)
@@ -40,8 +42,10 @@ namespace PentaSaber.ColorManagers
                 allowDualNeutral = Plugin.Config.AllowDualNeutral;
                 neutralBufferMin = Plugin.Config.NeutralBufferMin;
                 neutralBufferMax = Plugin.Config.NeutralBufferMax;
-                minColorDuration = Plugin.Config.MinColorDuration;
-                maxColorDuration = Plugin.Config.MaxColorDuration;
+                minMainColorDuration = Plugin.Config.MinMainColorDuration;
+                maxMainColorDuration = Plugin.Config.MaxMainColorDuration;
+                minAltColorDuration = Plugin.Config.MinAltColorDuration;
+                maxAltColorDuration = Plugin.Config.MaxAltColorDuration;
             }
             private int _current;
             public int NeutralBuffer;
@@ -86,9 +90,12 @@ namespace PentaSaber.ColorManagers
                 {
                     if (CurrentType != PentaNoteType.Neutral)
                     {
+                        bool isAlt = CurrentType == PentaNoteType.ColorA2 || CurrentType == PentaNoteType.ColorB2;
+                        int minDuration = isAlt ? minAltColorDuration : minMainColorDuration;
+                        int maxDuration = isAlt ? maxAltColorDuration : maxMainColorDuration;
                         if (previousNeutral)
                             LastNeutral = 1;
-                        CurrentDuration = RandomInt(minColorDuration, maxColorDuration + 1);
+                        CurrentDuration = RandomInt(minDuration, maxDuration + 1);
                         ResetNeutralBuffer();
                     }
                     else
@@ -119,7 +126,7 @@ namespace PentaSaber.ColorManagers
         public string Name => "Default";
 
         public string? Description => "The default color manager.";
-
+        public bool DisableScoreSubmission => true;
         private readonly NoteTypeTracker trackerA = new NoteTypeTracker(ColorType.ColorA);
         private readonly NoteTypeTracker trackerB = new NoteTypeTracker(ColorType.ColorB);
 

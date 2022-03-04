@@ -19,8 +19,10 @@ namespace PentaSaber
         public bool AllowDualNeutral { get; set; } = false;
         public int NeutralBufferMin { get; set; } = 1;
         public int NeutralBufferMax { get; set; } = 3;
-        public int MinColorDuration { get; set; } = 8;
-        public int MaxColorDuration { get; set; } = 30;
+        public int MinMainColorDuration { get; set; } = 8;
+        public int MaxMainColorDuration { get; set; } = 30;
+        public int MinAltColorDuration { get; set; } = 5;
+        public int MaxAltColorDuration { get; set; } = 15;
 
         public Color GetColor(PentaNoteType pentaNoteType)
         {

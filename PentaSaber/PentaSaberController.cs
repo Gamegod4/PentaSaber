@@ -79,6 +79,11 @@ namespace PentaSaber
         public void Initialize()
         {
             Instance = this;
+            if(_colorManager.DisableScoreSubmission)
+            {
+                BS_Utils.Gameplay.ScoreSubmission.DisableSubmission("PentaSaber");
+                Plugin.Log.Debug("Disabling score submission.");
+            }
             Plugin.Log.Debug($"PentaSaberController Initialized.");
         }
 

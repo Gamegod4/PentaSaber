@@ -14,6 +14,7 @@ namespace PentaSaber.ColorManagers
         public string Name => "Test Color Manager";
 
         public string? Description => "Color manager used for testing";
+        public bool DisableScoreSubmission => true;
 
         private readonly IInputController _inputController;
         public TestColorManager(IInputController inputController)
