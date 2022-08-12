@@ -24,8 +24,11 @@ namespace PentaSaber
             Instance = this;
             Log = logger;
             Config = conf.Generated<PluginConfig>();
-            zenjector.UseLogger(logger);
+            
+            PluginConfig.Instance = Config;
             zenjector.Install<PentaSaberInstaller>(Location.StandardPlayer);
+            zenjector.Install<PentaSaberInstaller>(Location.MultiPlayer);
+            BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup.instance.AddTab("Penta Saber", "PentaSaber.customSettingsMenu.bsml", PentaSettingsUI.instance);
         }
 
 
