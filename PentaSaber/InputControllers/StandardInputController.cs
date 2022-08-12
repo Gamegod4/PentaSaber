@@ -16,6 +16,10 @@ namespace PentaSaber.InputControllers
         public bool SaberAToggled => LeftTriggerActive;
 
         public bool SaberBToggled => RightTriggerActive;
+        public bool saberAToggleBool = false;
+        public bool saberBToggleBool = false;
+        public bool leftTrigPrev = false;
+        public bool rightTrigPrev = false;
 
         internal InputDevice LeftController
         {
