@@ -13,11 +13,11 @@ namespace PentaSaber.ColorManagers
             private readonly Random random;
             private const int maxIndex = 3;
             public bool allowDualNeutral { get; } = false;
-            public int neutralBufferMin { get; } = 1;
-            public int neutralBufferMax { get; } = 3;
-            public int minMainColorDuration { get; } = 5;
+            public int neutralBufferMin { get; } = 0;
+            public int neutralBufferMax { get; } = 0;
+            public int minMainColorDuration { get; } = 8;
             public int maxMainColorDuration { get; } = 20;
-            public int minAltColorDuration { get; } = 5;
+            public int minAltColorDuration { get; } = 8;
             public int maxAltColorDuration { get; } = 20;
             public readonly ColorType ColorType;
             private int RandomInt(int min, int max)
@@ -75,7 +75,8 @@ namespace PentaSaber.ColorManagers
             public int LastNeutral { get; private set; }
             public bool Increment(bool blockTransition)
             {
-                Plugin.Log.Debug($"{ColorType} : {CurrentType} : {CurrentCount}/{CurrentDuration}{(blockTransition ? " (transition blocked)" : "")}");
+                //--MY EDIT, removing spam as I don't fully understand this debug
+                //Plugin.Log.Debug($"{ColorType} : {CurrentType} : {CurrentCount}/{CurrentDuration}{(blockTransition ? " (transition blocked)" : "")}");
                 CurrentCount++;
                 bool previousNeutral = CurrentType == PentaNoteType.Neutral;
                 bool transitioned = false;
