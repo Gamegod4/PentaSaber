@@ -10,6 +10,7 @@ This is my attempt to build off of the work that Zingabopp has done to restore t
 -Block colors might not change sometimes. This is likely do to chroma and can be fixed by setting chroma block changing to off<br/>
 -The new slider and arc notes are not quite working with this version. I’m not sure how to fix it, but you should have what you need to play fine most of the time<br/>
 -Score submitting shouldn't be on in multiplayer, but seems like it submits a negative percent score and since I don't really know how that works.. it should be fine<br/>
+-Grip and secondary button may not work. This isn't actually an issue. If you are on SteamVR you have to add those buttons with legacy settings. They just need to be added because while they aren't added Steam blocks the button input.
 
 ## Required mods
 This mod should only require that you have BSIPA 4.2.2+, BS Utils 1.12.0+, and SiraUtil 3.0.0+
