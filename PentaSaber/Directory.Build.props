@@ -10,17 +10,17 @@
 		<RequiresBsipa>True</RequiresBsipa>
 		<PluginId>PentaSaber</PluginId>
 		<PluginName>PentaSaber</PluginName>
-		<Authors>Zingabopp</Authors>
-		<Version>0.0.2</Version>
-		<GameVersion>1.19.1</GameVersion>
+		<Authors>Zingabopp modified by Gamegod4</Authors>
+		<Version>1.0.102</Version>
+		<GameVersion>1.22.1</GameVersion>
 		<Description>Five different note colors.</Description>
 		<ProjectSource></ProjectSource>
 		<ProjectHome></ProjectHome>
 		<Donate>https://ko-fi.com/zingabopp</Donate>
 	</PropertyGroup>
 	<ItemGroup>
-		<DependsOn Include="BSIPA" Version="^4.2.1" />
-		<DependsOn Include="BS Utils" Version="^1.11.2" />
-		<DependsOn Include="SiraUtil" Version="^3.0.3" />
+		<DependsOn Include="BSIPA" Version="^4.2.2" />
+		<DependsOn Include="BS Utils" Version="^1.12.0" />
+		<DependsOn Include="SiraUtil" Version="^3.0.0" />
 	</ItemGroup>
 </Project>
