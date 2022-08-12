@@ -9,9 +9,17 @@ This is my attempt to build off of the work that Zingabopp has done to restore t
 -Sets of notes might be different colors at times. I don’t know of how to fix it, but it should be fine most of the time<br/>
 -Block colors might not change sometimes. This is likely do to chroma and can be fixed by setting chroma block changing to off<br/>
 -The new slider and arc notes are not quite working with this version. I’m not sure how to fix it, but you should have what you need to play fine most of the time<br/>
+-Score submitting shouldn't be on in multiplayer, but seems like it submits a negative percent score and since I don't really know how that works.. it should be fine<br/>
+
+## Required mods
+This mod should only require that you have BSIPA 4.2.2+, BS Utils 1.12.0+, and SiraUtil 3.0.0+
 
 ## Suggested settings for config
 I have had my settings for NutralBufferMin and NeutralBufferMax set to 0. What this does is disable gray notes completely which I think actually makes the color changes easier to deal with if you're worried about messing up your flow
 
 ## Configuration
 Currently, settings must be adjusted in `UserData\PentaSaber.json` (including whether the mod is enabled/disabled).
+
+![20220811225911_1](https://user-images.githubusercontent.com/51224222/184283666-4898ec5e-de23-4d7d-ab5a-60c75583b3d5.jpg)
+![20220811225925_1](https://user-images.githubusercontent.com/51224222/184283672-2e14a176-fcab-4a3b-adeb-ae8a568b92c7.jpg)
+![20220811230004_1](https://user-images.githubusercontent.com/51224222/184283682-724207db-59ab-409f-b3a7-8666ab9b06b1.jpg)
