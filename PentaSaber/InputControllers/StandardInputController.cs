@@ -11,7 +11,6 @@ namespace PentaSaber.InputControllers
     {
         private InputDevice leftController; 
         private InputDevice rightController;
-        public float TriggerThreshold = 0.85f;
         private static int rightFailedTries = 0;
         private static int leftFailedTries = 0;
         public bool SaberAToggled => LeftTriggerActive;
@@ -56,22 +55,61 @@ namespace PentaSaber.InputControllers
             }
             set => rightController = value;
         }
-
+        
+        private bool buttonSwitchCases(int buttonSelection, InputDevice givenDevice, float givenThreshold)
+        {
+            switch (buttonSelection)
+            {
+                case 0:
+                    { if (givenDevice.TryGetFeatureValue(CommonUsages.trigger, out float value)) { return value > givenThreshold; } break; }
+                case 1:
+                    { if (givenDevice.TryGetFeatureValue(CommonUsages.grip, out float value)) { return value > givenThreshold; } break; }
+                case 2:
+                    { if (givenDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool value)) { return value; } break; }
+                case 3:
+                    { if (givenDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool value)) { return value; } break; }
+            }
+            return false;//default
+        }
+        //button selected numbers
+        //0 = trigger
+        //1 = grip
+        //2 = button A
+        //3 = button B
 
         public bool RightTriggerActive
         {
             get
             {
                 InputDevice device = RightController;
-                if (device.isValid)
+                bool active = false;
+
+                if (PluginConfig.Instance.toggleLockEnabled)//there might be an issue with switching between modes that causes the prev bool to screw me
                 {
-                    if (device.TryGetFeatureValue(CommonUsages.trigger, out float value))
+                    if (device.isValid)
                     {
-                        bool active = value > TriggerThreshold;
+                        active = buttonSwitchCases(PluginConfig.Instance.rightButtonSelection, device, PluginConfig.Instance.rightButtonThreshold);
+                    }
+                    if (active && !rightTrigPrev)
+                    {
+                        saberBToggleBool = !saberBToggleBool;//toggle
+                        rightTrigPrev = active;
+                    }
+                    if (active == false && !rightTrigPrev == false)
+                    {
+                        rightTrigPrev = active;//untoggle?
+                    }
+                    return saberBToggleBool;
+                }
+                else
+                {
+                    if (device.isValid)
+                    {
+                        active = buttonSwitchCases(PluginConfig.Instance.rightButtonSelection, device, PluginConfig.Instance.rightButtonThreshold);
                         return active;
                     }
+                    return false;
                 }
-                return false;
             }
         }
 
@@ -80,15 +118,34 @@ namespace PentaSaber.InputControllers
             get
             {
                 InputDevice device = LeftController;
-                if (device.isValid)
+                bool active = false;
+
+                if (PluginConfig.Instance.toggleLockEnabled)//there might be an issue with switching between modes that causes the prev bool to screw me
                 {
-                    if (device.TryGetFeatureValue(CommonUsages.trigger, out float value))
+                    if (device.isValid)
                     {
-                        bool active = value > TriggerThreshold;
+                        active = buttonSwitchCases(PluginConfig.Instance.leftButtonSelection, device, PluginConfig.Instance.leftButtonThreshold);
+                    }
+                    if (active && !leftTrigPrev)
+                    {
+                        saberAToggleBool = !saberAToggleBool;//toggle
+                        leftTrigPrev = active;
+                    }
+                    if (active == false && !leftTrigPrev == false)
+                    {
+                        leftTrigPrev = active;//untoggle?
+                    }
+                    return saberAToggleBool;
+                }
+                else
+                {
+                    if (device.isValid)
+                    {
+                        active = buttonSwitchCases(PluginConfig.Instance.leftButtonSelection, device, PluginConfig.Instance.leftButtonThreshold);
                         return active;
                     }
+                    return false;
                 }
-                return false;
             }
         }
     }
