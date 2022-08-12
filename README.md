@@ -9,5 +9,8 @@ This is my attempt to build off of the work that Zingabopp has done to restore t
 -Block colors might not change sometimes. This is likely do to chroma and can be fixed by setting chroma block changing to off<br/>
 -The new slider and arc notes are not quite working with this version. I’m not sure how to fix it, but you should have what you need to play fine most of the time<br/>
 
+## Suggested settings for config
+I have had my settings for NutralBufferMin and NeutralBufferMax set to 0. What this does is disable gray notes completely which I think actually makes the color changes easier to deal with if you're worried about messing up your flow
+
 ## Configuration
 Currently, settings must be adjusted in `UserData\PentaSaber.json` (including whether the mod is enabled/disabled).
