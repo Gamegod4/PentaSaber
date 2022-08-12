@@ -9,7 +9,20 @@ namespace PentaSaber
 {
     public class PluginConfig
     {
+        private static PluginConfig? _instance;
+        
+        public static PluginConfig Instance
+        {
+            get => _instance ?? throw new System.InvalidOperationException("PentaConfig instance not yet created.");
+            set => _instance = value;
+        }
+        
         public virtual bool Enabled { get; set; } = true;
+        public virtual bool toggleLockEnabled { get; set; } = true;
+        public virtual int leftButtonSelection { get; set; } = 0;
+        public virtual int rightButtonSelection { get; set; } = 0;
+        public virtual float leftButtonThreshold { get; set; } = 0.5f;
+        public virtual float rightButtonThreshold { get; set; } = 0.5f;
         public virtual Color SaberA1 { get; set; } = Color.red;
         public virtual Color SaberA2 { get; set; } = Color.magenta;
         public virtual Color SaberB1 { get; set; } = Color.blue;
