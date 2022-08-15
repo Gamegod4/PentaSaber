@@ -15,7 +15,7 @@ This is my attempt to build off of the work that Zingabopp has done to restore t
 This mod should only require that you have BSIPA 4.2.2+, BS Utils 1.12.0+, and SiraUtil 3.0.0+
 
 ## Suggested settings for config
-I have had my settings for NutralBufferMin and NeutralBufferMax set to 0. What this does is disable gray notes completely which I think actually makes the color changes easier to deal with if you're worried about messing up your flow
+I have had my settings for neutralBufferNumber set to 0. What this does is disable gray notes completely which I think actually makes the color changes easier to deal with if you're worried about messing up your flow
 
 ## Configuration
 Currently, settings must be adjusted in `UserData\PentaSaber.json` (including whether the mod is enabled/disabled).
