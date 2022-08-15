@@ -25,13 +25,6 @@ namespace PentaSaber
             set => PluginConfig.Instance.toggleLockEnabled = value;
         }
 
-        [UIValue("toggleDual-enabled")]
-        private bool toggleDualEnabled
-        {
-            get => PluginConfig.Instance.AllowDualNeutral;
-            set => PluginConfig.Instance.AllowDualNeutral = value;
-        }
-
         [UIValue("leftButton")]
         private int leftButtonDropdown
         {
@@ -65,9 +58,19 @@ namespace PentaSaber
 
         [UIValue("rightButtonChoices")]
         private readonly List<object> rightChoices = new List<object> { 0, 1, 2, 3 };
+        
+        [UIValue("transitionButton")]
+        private float transitionButtonDropdown
+        {
+            get => PluginConfig.Instance.transitionBlockerLength;
+            set => PluginConfig.Instance.transitionBlockerLength = value;
+        }
 
         [UIValue("oneToNineTenthChoicesTag")]
         private readonly List<object> oneToNineTenthChoices = new List<object> { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f };
+        
+        [UIValue("P0ToP1TenthChoicesTag")]
+        private readonly List<object> P0ToP1TenthChoices = new List<object> { 0.0f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.06f, 0.07f, 0.08f, 0.09f, 0.1f };
 
         [UIValue("UIleftPrimaryColor")]
         private UnityEngine.Color leftPrimaryColor
@@ -145,6 +148,38 @@ namespace PentaSaber
                     return "0.8";
                 case 0.9f:
                     return "0.9";
+                default:
+                    return "";
+            }
+        }
+        
+        [UIAction("buttonsP0toP1Form")]
+        private string numToP0ToP1Button(float t)
+        {
+            switch (t)
+            {
+                case 0.0f:
+                    return "0.0";
+                case 0.01f:
+                    return "0.01";
+                case 0.02f:
+                    return "0.02";
+                case 0.03f:
+                    return "0.03";
+                case 0.04f:
+                    return "0.04";
+                case 0.05f:
+                    return "0.05";
+                case 0.06f:
+                    return "0.06";
+                case 0.07f:
+                    return "0.07";
+                case 0.08f:
+                    return "0.08";
+                case 0.09f:
+                    return "0.09";
+                case 1.0f:
+                    return "1.0";
                 default:
                     return "";
             }
