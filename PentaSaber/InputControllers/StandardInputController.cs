@@ -88,7 +88,7 @@ namespace PentaSaber.InputControllers
                 InputDevice device = RightController;
                 bool active = false;
 
-                if (PluginConfig.Instance.toggleLockEnabled)//there might be an issue with switching between modes that causes the prev bool to screw me
+                if (PluginConfig.Instance.toggleLockEnabled)
                 {
                     if (device.isValid)
                     {
@@ -101,7 +101,7 @@ namespace PentaSaber.InputControllers
                     }
                     if (active == false && !rightTrigPrev == false)
                     {
-                        rightTrigPrev = active;//untoggle?
+                        rightTrigPrev = active;//untoggle
                     }
                     return saberBToggleBool;
                 }
@@ -124,7 +124,7 @@ namespace PentaSaber.InputControllers
                 InputDevice device = LeftController;
                 bool active = false;
 
-                if (PluginConfig.Instance.toggleLockEnabled)//there might be an issue with switching between modes that causes the prev bool to screw me
+                if (PluginConfig.Instance.toggleLockEnabled)
                 {
                     if (device.isValid)
                     {
@@ -137,7 +137,7 @@ namespace PentaSaber.InputControllers
                     }
                     if (active == false && !leftTrigPrev == false)
                     {
-                        leftTrigPrev = active;//untoggle?
+                        leftTrigPrev = active;//untoggle
                     }
                     return saberAToggleBool;
                 }
