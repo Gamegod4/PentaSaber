@@ -19,7 +19,7 @@
   <horizontal min-width="80">
     <label text="Options" align="Center"/>
   </horizontal>
-  <bool-setting text='Allow simultaneous neutral' value='toggleDual-enabled' apply-on-change="true" bind-value="true"></bool-setting>
+  <dropdown-list-setting value="transitionButton" text="Transition blocker length" options='P0ToP1TenthChoicesTag' formatter='buttonsP0toP1Form' apply-on-change="true" bind-value="true"/>
   <horizontal min-width="40">
     <label text="-Min Max Setttings in UserData-" align="Center"/>
   </horizontal>
