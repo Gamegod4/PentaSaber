@@ -23,19 +23,15 @@ namespace PentaSaber
         public virtual int rightButtonSelection { get; set; } = 0;
         public virtual float leftButtonThreshold { get; set; } = 0.5f;
         public virtual float rightButtonThreshold { get; set; } = 0.5f;
+        public virtual float transitionBlockerLength { get; set; } = 0.05f;
+        public virtual int minDuration { get; set; } = 5;
+        public virtual int maxDuration { get; set; } = 10;
+        public virtual int neutralBufferNumber { get; set; } = 3;
         public virtual Color SaberA1 { get; set; } = Color.red;
         public virtual Color SaberA2 { get; set; } = Color.magenta;
         public virtual Color SaberB1 { get; set; } = Color.blue;
         public virtual Color SaberB2 { get; set; } = Color.green;
         public virtual Color Neutral { get; set; } = Color.grey;
-
-        public bool AllowDualNeutral { get; set; } = false;
-        public int NeutralBufferMin { get; set; } = 1;
-        public int NeutralBufferMax { get; set; } = 3;
-        public int MinMainColorDuration { get; set; } = 8;
-        public int MaxMainColorDuration { get; set; } = 40;
-        public int MinAltColorDuration { get; set; } = 5;
-        public int MaxAltColorDuration { get; set; } = 12;
 
         public Color GetColor(PentaNoteType pentaNoteType)
         {
