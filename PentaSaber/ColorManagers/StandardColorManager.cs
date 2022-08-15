@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,15 +12,16 @@ namespace PentaSaber.ColorManagers
         {
             private readonly Random random;
             private const int maxIndex = 3;
-            public bool allowDualNeutral { get; } = false;
-            public int neutralBufferMin { get; } = 0;
-            public int neutralBufferMax { get; } = 0;
-            public int minMainColorDuration { get; } = 8;
-            public int maxMainColorDuration { get; } = 20;
-            public int minAltColorDuration { get; } = 8;
-            public int maxAltColorDuration { get; } = 20;
+            public int neutralBufferNumber { get; } = 0;
+            public int minDuration { get; } = 5;
+            public int maxDuration { get; } = 10;
+            public float transitionBlockerLength { get; } = 0.05f;
+            public int currentNeutralCount = 0;
+            public bool timeTrigger = false;
+            public float timeTracker = 0.0f;
+            public float baseTimeNum = 1.0f;
             public readonly ColorType ColorType;
-            private int RandomInt(int min, int max)
+            public int RandomInt(int min, int max)
             {
                 return random.Next(min, max);
             }
@@ -28,104 +29,34 @@ namespace PentaSaber.ColorManagers
             {
                 ColorType = colorType;
                 random = new Random((int)DateTime.Now.Ticks + ((int)colorType * 13));
-                CurrentDuration = RandomInt(minMainColorDuration, maxMainColorDuration + 1);
-                ResetNeutralBuffer();
                 CurrentType = colorType == ColorType.ColorA ? PentaNoteType.ColorA1 : PentaNoteType.ColorB1;
-                if (NeutralBuffer > 0)
-                {
-                    NextType = PentaNoteType.Neutral;
-                }
-                else
-                {
-                    NextType = colorType == ColorType.ColorA ? PentaNoteType.ColorA2 : PentaNoteType.ColorB2;
-                }
-                allowDualNeutral = Plugin.Config.AllowDualNeutral;
-                neutralBufferMin = Plugin.Config.NeutralBufferMin;
-                neutralBufferMax = Plugin.Config.NeutralBufferMax;
-                minMainColorDuration = Plugin.Config.MinMainColorDuration;
-                maxMainColorDuration = Plugin.Config.MaxMainColorDuration;
-                minAltColorDuration = Plugin.Config.MinAltColorDuration;
-                maxAltColorDuration = Plugin.Config.MaxAltColorDuration;
+                neutralBufferNumber = Plugin.Config.neutralBufferNumber;
+                minDuration = Plugin.Config.minDuration;
+                maxDuration = Plugin.Config.maxDuration;
+                transitionBlockerLength = Plugin.Config.transitionBlockerLength;
+
+                if (minDuration <= 0) { minDuration = 1; }
+                if (maxDuration < minDuration) { maxDuration = minDuration; }
+                if (neutralBufferNumber < 0) { neutralBufferNumber = 0; }
             }
-            private int _current;
-            public int NeutralBuffer;
             public PentaNoteType CurrentType { get; private set; }
             public PentaNoteType NextType { get; private set; }
-            public int Current
-            {
-                get => _current;
-                private set
-                {
-                    if (_current == value)
-                        return;
-                    if (value > maxIndex)
-                        value = 0;
-                    _current = value;
-                    CurrentCount = 0;
-                    Next = value + 1;
-                    if (Next > maxIndex)
-                        Next = 0;
-                    CurrentType = GetNoteTypeForIndex(ColorType, Current, NeutralBuffer > 0);
-                    NextType = GetNoteTypeForIndex(ColorType, Next, NeutralBuffer > 0);
-                }
-            }
             public int Next { get; private set; }
-            public int CurrentCount { get; private set; }
-            public int CurrentDuration { get; set; }
-            public int LastNeutral { get; private set; }
-            public bool Increment(bool blockTransition)
+            
+            private int colorNum = 1;
+            public void triggerColor()
             {
-                //--MY EDIT, removing spam as I don't fully understand this debug
-                //Plugin.Log.Debug($"{ColorType} : {CurrentType} : {CurrentCount}/{CurrentDuration}{(blockTransition ? " (transition blocked)" : "")}");
-                CurrentCount++;
-                bool previousNeutral = CurrentType == PentaNoteType.Neutral;
-                bool transitioned = false;
-                if (LastNeutral > 0)
-                    LastNeutral++;
-                if (CurrentCount >= CurrentDuration && !blockTransition)
-                {
-                    Current++;
-                    transitioned = true;
-                }
-                if (transitioned)
-                {
-                    if (CurrentType != PentaNoteType.Neutral)
-                    {
-                        bool isAlt = CurrentType == PentaNoteType.ColorA2 || CurrentType == PentaNoteType.ColorB2;
-                        int minDuration = isAlt ? minAltColorDuration : minMainColorDuration;
-                        int maxDuration = isAlt ? maxAltColorDuration : maxMainColorDuration;
-                        if (previousNeutral)
-                            LastNeutral = 1;
-                        CurrentDuration = RandomInt(minDuration, maxDuration + 1);
-                        ResetNeutralBuffer();
-                    }
-                    else
-                    {
-                        LastNeutral = 0;
-                        CurrentDuration = NeutralBuffer;
-                    }
-                }
-                return transitioned;
+                if (colorNum == 1) { CurrentType = GetNoteTypeForIndex(ColorType, 1, false); colorNum = 3; }
+                else { CurrentType = GetNoteTypeForIndex(ColorType, 3, false); colorNum = 1; }
             }
 
-            private void ResetNeutralBuffer()
-            {
-                if (neutralBufferMax >= neutralBufferMin && neutralBufferMax > 0)
-                {
-                    NeutralBuffer = RandomInt(neutralBufferMin, neutralBufferMax);
-                }
-                else
-                {
-                    NeutralBuffer = 0;
-                }
-            }
+            public void triggerNeutral(bool state) { CurrentType = GetNoteTypeForIndex(ColorType, colorNum, state); }
 
+            public void advanceTimeTracker(GameNoteController note) { timeTracker = note.noteData.time + (baseTimeNum * RandomInt(minDuration, maxDuration)); }
         }
 
         public string Id => "Default";
-
         public string Name => "Default";
-
         public string? Description => "The default color manager.";
         public bool DisableScoreSubmission => true;
         private readonly NoteTypeTracker trackerA = new NoteTypeTracker(ColorType.ColorA);
@@ -135,19 +66,40 @@ namespace PentaSaber.ColorManagers
         {
         }
 
+        private readonly Random randomExt;
+        public int RandomExtInt(int min, int max)
+        {
+            return randomExt.Next(min, max);
+        }
+
         public PentaNoteType GetNextNoteType(GameNoteController note)
         {
             ColorType currentType = note.noteData.colorType;
             NoteTypeTracker noteTracker = currentType == ColorType.ColorA ? trackerA : trackerB;
             NoteTypeTracker otherTracker = currentType == ColorType.ColorA ? trackerB : trackerA;
-            bool blockTransition = !noteTracker.allowDualNeutral
-                                    && otherTracker.CurrentType == PentaNoteType.Neutral
-                                    && noteTracker.NextType == PentaNoteType.Neutral
-                                    && otherTracker.LastNeutral < 5;
-            //if (blockTransition)
-            //    Plugin.Log.Debug($"Blocking transition for {currentType}");
-            bool transitioned = noteTracker.Increment(blockTransition);
 
+            if (noteTracker.timeTracker == 0) { noteTracker.advanceTimeTracker(note); }
+            else if (note.noteData.time >= noteTracker.timeTracker) { noteTracker.timeTrigger = true; }
+
+            if (noteTracker.CurrentType != PentaNoteType.Neutral)
+            {
+                if ((noteTracker.timeTrigger && note.noteData.timeToPrevColorNote > noteTracker.transitionBlockerLength))
+                {
+                    noteTracker.triggerColor();
+                    if (noteTracker.neutralBufferNumber == 0) { noteTracker.timeTrigger = false; noteTracker.advanceTimeTracker(note); }
+                    if (noteTracker.neutralBufferNumber > 0) { noteTracker.triggerNeutral(true); noteTracker.currentNeutralCount++; }
+                }
+            }
+            else
+            {
+                if (noteTracker.currentNeutralCount < noteTracker.neutralBufferNumber) { noteTracker.currentNeutralCount++; }
+                else
+                {
+                    if (noteTracker.neutralBufferNumber > 0) { noteTracker.currentNeutralCount = 0; noteTracker.triggerNeutral(false); }
+                    noteTracker.timeTrigger = false;
+                    noteTracker.advanceTimeTracker(note);
+                }
+            }
 
             return noteTracker.CurrentType;
         }
