@@ -8,14 +8,36 @@ using BeatSaberMarkupLanguage.Attributes;
 
 namespace PentaSaber
 {
-    internal class PentaSettingsUI : PersistentSingleton<PentaSettingsUI>
+    internal class PentaSettingsUI : BeatSaberMarkupLanguage.Components.NotifiableSingleton<PentaSettingsUI>
     {
         //#pragma warning disable IDE0052 // Remove unread private members
         [UIValue("colorChange-enabled")]
         private bool CommandEnabled
         {
             get => PluginConfig.Instance.Enabled;
-            set => PluginConfig.Instance.Enabled = value;
+            set
+            {
+                PluginConfig.Instance.Enabled = value;
+                if (value)
+                {
+                    PluginConfig.Instance.SeptaEnabled = false;
+                    NotifyPropertyChanged(nameof(CommandEnabled2));
+                }
+            }
+        }
+        [UIValue("colorChange2-enabled")]
+        private bool CommandEnabled2
+        {
+            get => PluginConfig.Instance.SeptaEnabled;
+            set
+            {
+                PluginConfig.Instance.SeptaEnabled = value;
+                if (value)
+                {
+                    PluginConfig.Instance.Enabled = false;
+                    NotifyPropertyChanged(nameof(CommandEnabled));
+                }
+            }
         }
 
         [UIValue("toggleLock-enabled")]
@@ -25,40 +47,107 @@ namespace PentaSaber
             set => PluginConfig.Instance.toggleLockEnabled = value;
         }
 
+        [UIValue("trueRandomSepta-enabled")]
+        private bool toggleTrueRandomSeptaEnabled
+        {
+            get => PluginConfig.Instance.trueRandomSepta;
+            set => PluginConfig.Instance.trueRandomSepta = value;
+        }
+
         [UIValue("leftButton")]
         private int leftButtonDropdown
         {
-            get => PluginConfig.Instance.leftButtonSelection;
-            set => PluginConfig.Instance.leftButtonSelection = value;
+            get => PluginConfig.Instance.leftSecondaryButtonSelection;
+            set
+            {
+                PluginConfig.Instance.leftSecondaryButtonSelection = value;
+                if (PluginConfig.Instance.leftTertiaryButtonSelection == value)
+                {
+                    PluginConfig.Instance.leftTertiaryButtonSelection = 4;
+                    NotifyPropertyChanged(nameof(leftButtonDropdown2));
+                }
+            }
         }
 
         [UIValue("leftButtonThresh")]
         private float leftButtonThresholdDropdown
         {
-            get => PluginConfig.Instance.leftButtonThreshold;
-            set => PluginConfig.Instance.leftButtonThreshold = value;
+            get => PluginConfig.Instance.leftSecondaryButtonThreshold;
+            set => PluginConfig.Instance.leftSecondaryButtonThreshold = value;
+        }
+
+        [UIValue("leftButton2")]
+        private int leftButtonDropdown2
+        {
+            get => PluginConfig.Instance.leftTertiaryButtonSelection;
+            set
+            {
+                PluginConfig.Instance.leftTertiaryButtonSelection = value;
+                if (PluginConfig.Instance.leftSecondaryButtonSelection == value)
+                {
+                    PluginConfig.Instance.leftSecondaryButtonSelection = 4;
+                    NotifyPropertyChanged(nameof(leftButtonDropdown));
+                }
+            }
+        }
+
+        [UIValue("leftButtonThresh2")]
+        private float leftButtonThresholdDropdown2
+        {
+            get => PluginConfig.Instance.leftTertiaryButtonThreshold;
+            set => PluginConfig.Instance.leftTertiaryButtonThreshold = value;
         }
 
         [UIValue("leftButtonChoices")]
-        private readonly List<object> leftChoices = new List<object> { 0, 1, 2, 3 };
+        private readonly List<object> leftChoices = new List<object> { 0, 1, 2, 3, 4 };
 
         [UIValue("rightButton")]
         private int rightButtonDropdown
         {
-            get => PluginConfig.Instance.rightButtonSelection;
-            set => PluginConfig.Instance.rightButtonSelection = value;
+            get => PluginConfig.Instance.rightSecondaryButtonSelection;
+            set
+            {
+                PluginConfig.Instance.rightSecondaryButtonSelection = value;
+                if (PluginConfig.Instance.rightTertiaryButtonSelection == value)
+                {
+                    PluginConfig.Instance.rightTertiaryButtonSelection = 4;
+                    NotifyPropertyChanged(nameof(rightButtonDropdown2));
+                }
+            }
         }
 
         [UIValue("rightButtonThresh")]
         private float rightButtonThresholdDropdown
         {
-            get => PluginConfig.Instance.rightButtonThreshold;
-            set => PluginConfig.Instance.rightButtonThreshold = value;
+            get => PluginConfig.Instance.rightSecondaryButtonThreshold;
+            set => PluginConfig.Instance.rightSecondaryButtonThreshold = value;
+        }
+
+        [UIValue("rightButton2")]
+        private int rightButtonDropdown2
+        {
+            get => PluginConfig.Instance.rightTertiaryButtonSelection;
+            set
+            {
+                PluginConfig.Instance.rightTertiaryButtonSelection = value;
+                if (PluginConfig.Instance.rightSecondaryButtonSelection == value)
+                {
+                    PluginConfig.Instance.rightSecondaryButtonSelection = 4;
+                    NotifyPropertyChanged(nameof(rightButtonDropdown));
+                }
+            }
+        }
+
+        [UIValue("rightButtonThresh2")]
+        private float rightButtonThresholdDropdown2
+        {
+            get => PluginConfig.Instance.rightTertiaryButtonThreshold;
+            set => PluginConfig.Instance.rightTertiaryButtonThreshold = value;
         }
 
         [UIValue("rightButtonChoices")]
-        private readonly List<object> rightChoices = new List<object> { 0, 1, 2, 3 };
-        
+        private readonly List<object> rightChoices = new List<object> { 0, 1, 2, 3, 4 };
+
         [UIValue("transitionButton")]
         private float transitionButtonDropdown
         {
@@ -68,7 +157,7 @@ namespace PentaSaber
 
         [UIValue("oneToNineTenthChoicesTag")]
         private readonly List<object> oneToNineTenthChoices = new List<object> { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f };
-        
+
         [UIValue("P0ToP1TenthChoicesTag")]
         private readonly List<object> P0ToP1TenthChoices = new List<object> { 0.0f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.06f, 0.07f, 0.08f, 0.09f, 0.1f };
 
@@ -100,6 +189,20 @@ namespace PentaSaber
             set => PluginConfig.Instance.SaberB2 = value;
         }
 
+        [UIValue("UIleftTertiaryColor")]
+        private UnityEngine.Color leftTertiaryColor
+        {
+            get => PluginConfig.Instance.SaberA3;
+            set => PluginConfig.Instance.SaberA3 = value;
+        }
+
+        [UIValue("UIrightTertiaryColor")]
+        private UnityEngine.Color rightTertiaryColor
+        {
+            get => PluginConfig.Instance.SaberB3;
+            set => PluginConfig.Instance.SaberB3 = value;
+        }
+
         [UIValue("UIneutralColor")]
         private UnityEngine.Color neutralColor
         {
@@ -120,6 +223,8 @@ namespace PentaSaber
                     return "Primary Button";
                 case 3:
                     return "Secondary Button";
+                case 4:
+                    return "Not Set";
                 default:
                     return "";
             }
@@ -152,7 +257,7 @@ namespace PentaSaber
                     return "";
             }
         }
-        
+
         [UIAction("buttonsP0toP1Form")]
         private string numToP0ToP1Button(float t)
         {
