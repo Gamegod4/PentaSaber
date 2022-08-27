@@ -13,7 +13,7 @@ namespace PentaSaber
     {
         public override void InstallBindings()
         {
-            if(Plugin.Config.Enabled)
+            if(Plugin.Config.Enabled || Plugin.Config.SeptaEnabled)
             {
                 Plugin.Log?.Debug("Binding dependencies");
                 Container.Bind<IInputController>().To<StandardInputController>().AsTransient();
