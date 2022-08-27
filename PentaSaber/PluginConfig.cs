@@ -17,21 +17,29 @@ namespace PentaSaber
             set => _instance = value;
         }
         
-        public virtual bool Enabled { get; set; } = true;
-        public virtual bool toggleLockEnabled { get; set; } = true;
-        public virtual int leftButtonSelection { get; set; } = 0;
-        public virtual int rightButtonSelection { get; set; } = 0;
-        public virtual float leftButtonThreshold { get; set; } = 0.5f;
-        public virtual float rightButtonThreshold { get; set; } = 0.5f;
+        public virtual bool Enabled { get; set; } = false;
+        public virtual bool SeptaEnabled { get; set; } = false;
+        public virtual bool toggleLockEnabled { get; set; } = false;
+        public virtual bool trueRandomSepta { get; set; } = true;
+        public virtual int leftSecondaryButtonSelection { get; set; } = 0;
+        public virtual float leftSecondaryButtonThreshold { get; set; } = 0.5f;
+        public virtual int leftTertiaryButtonSelection { get; set; } = 0;
+        public virtual float leftTertiaryButtonThreshold { get; set; } = 0.5f;
+        public virtual int rightSecondaryButtonSelection { get; set; } = 0;
+        public virtual float rightSecondaryButtonThreshold { get; set; } = 0.5f;
+        public virtual int rightTertiaryButtonSelection { get; set; } = 0;
+        public virtual float rightTertiaryButtonThreshold { get; set; } = 0.5f;
         public virtual float transitionBlockerLength { get; set; } = 0.05f;
-        public virtual int minDuration { get; set; } = 5;
-        public virtual int maxDuration { get; set; } = 10;
+        public virtual int minDuration { get; set; } = 10;
+        public virtual int maxDuration { get; set; } = 20;
         public virtual int neutralBufferNumber { get; set; } = 3;
-        public virtual Color SaberA1 { get; set; } = Color.red;
-        public virtual Color SaberA2 { get; set; } = Color.magenta;
-        public virtual Color SaberB1 { get; set; } = Color.blue;
-        public virtual Color SaberB2 { get; set; } = Color.green;
-        public virtual Color Neutral { get; set; } = Color.grey;
+        public virtual Color SaberA1 { get; set; } = colorPresets.Red;
+        public virtual Color SaberA2 { get; set; } = colorPresets.Violet;
+        public virtual Color SaberA3 { get; set; } = colorPresets.Yellow;
+        public virtual Color SaberB1 { get; set; } = colorPresets.Blue;
+        public virtual Color SaberB2 { get; set; } = colorPresets.Green;
+        public virtual Color SaberB3 { get; set; } = colorPresets.Cyan;
+        public virtual Color Neutral { get; set; } = colorPresets.Gray;
 
         public Color GetColor(PentaNoteType pentaNoteType)
         {
@@ -41,10 +49,27 @@ namespace PentaSaber
                 PentaNoteType.ColorB1 => SaberB1,
                 PentaNoteType.ColorA2 => SaberA2,
                 PentaNoteType.ColorB2 => SaberB2,
+                PentaNoteType.ColorA3 => SaberA3,
+                PentaNoteType.ColorB3 => SaberB3,
                 PentaNoteType.Neutral => Neutral,
                 _ => Color.black
             };
         }
+    }
 
+    public class colorPresets
+    {
+        static public Color Red = new Color(1, 0, 0, 1);
+        static public Color Orange = new Color(1, .6445f, 0, 1);
+        static public Color Yellow = new Color(1, 1, 0, 1);
+        static public Color Green = new Color(0, 1, 0, 1);
+        static public Color Blue = new Color(0, 0, 1, 1);
+        static public Color Indigo = new Color(.2930f, 0, .5078f, 1);
+        static public Color Violet = new Color(.9297f, .5078f, .9297f, 1);
+        static public Color Brown = new Color(.6445f, .1641f, .1641f, 1);
+        static public Color Cyan = new Color(0, 1, 1, 1);
+        static public Color Black = new Color(0, 0, 0, 1);
+        static public Color White = new Color(1, 1, 1, 1);
+        static public Color Gray = new Color(.5f, .5f, .5f, 1);
     }
 }
