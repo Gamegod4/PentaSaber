@@ -24,10 +24,17 @@ namespace PentaSaber
             Instance = this;
             Log = logger;
             Config = conf.Generated<PluginConfig>();
-            
+
             PluginConfig.Instance = Config;
+            if (PluginConfig.Instance.Enabled)//preventing double enables
+            {
+                if (PluginConfig.Instance.SeptaEnabled) { PluginConfig.Instance.SeptaEnabled = false; }
+            }
+            if (PluginConfig.Instance.leftSecondaryButtonSelection == PluginConfig.Instance.leftTertiaryButtonSelection) { PluginConfig.Instance.leftTertiaryButtonSelection = 4; }
+            if (PluginConfig.Instance.rightSecondaryButtonSelection == PluginConfig.Instance.rightTertiaryButtonSelection) { PluginConfig.Instance.rightTertiaryButtonSelection = 4; }
             zenjector.Install<PentaSaberInstaller>(Location.StandardPlayer);
             zenjector.Install<PentaSaberInstaller>(Location.MultiPlayer);
+
             BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup.instance.AddTab("Penta Saber", "PentaSaber.customSettingsMenu.bsml", PentaSettingsUI.instance);
         }
 
