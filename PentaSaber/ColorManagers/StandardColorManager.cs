@@ -19,7 +19,7 @@ namespace PentaSaber.ColorManagers
             public int currentNeutralCount = 0;
             public bool timeTrigger = false;
             public float timeTracker = 0.0f;
-            public float baseTimeNum = 1.0f;
+            public float baseTimeNum = 0.5f;
             public readonly ColorType ColorType;
             public int RandomInt(int min, int max)
             {
@@ -32,22 +32,80 @@ namespace PentaSaber.ColorManagers
                 CurrentType = colorType == ColorType.ColorA ? PentaNoteType.ColorA1 : PentaNoteType.ColorB1;
                 neutralBufferNumber = Plugin.Config.neutralBufferNumber;
                 minDuration = Plugin.Config.minDuration;
-                maxDuration = Plugin.Config.maxDuration;
+                maxDuration = Plugin.Config.maxDuration + 1;//counter random maxout
                 transitionBlockerLength = Plugin.Config.transitionBlockerLength;
 
                 if (minDuration <= 0) { minDuration = 1; }
-                if (maxDuration < minDuration) { maxDuration = minDuration; }
+                if (maxDuration < minDuration) { maxDuration = minDuration + 1; }//counter random maxout
                 if (neutralBufferNumber < 0) { neutralBufferNumber = 0; }
             }
             public PentaNoteType CurrentType { get; private set; }
-            public PentaNoteType NextType { get; private set; }
-            public int Next { get; private set; }
             
             private int colorNum = 1;
             public void triggerColor()
             {
-                if (colorNum == 1) { CurrentType = GetNoteTypeForIndex(ColorType, 1, false); colorNum = 3; }
-                else { CurrentType = GetNoteTypeForIndex(ColorType, 3, false); colorNum = 1; }
+                int tempInt = 0;
+                if (PluginConfig.Instance.SeptaEnabled)
+                {
+                    if (PluginConfig.Instance.trueRandomSepta)
+                    {
+                        if (colorNum == 1)
+                        {
+                            CurrentType = GetNoteTypeForIndex(ColorType, 1, false);
+                            tempInt = RandomInt(1, 3);
+                            if (tempInt == 1) { colorNum = 3; }
+                            else { colorNum = 5; }
+                        }
+                        else if (colorNum == 3)
+                        {
+                            CurrentType = GetNoteTypeForIndex(ColorType, 3, false);
+                            tempInt = RandomInt(1, 3);
+                            if (tempInt == 1) { colorNum = 1; }
+                            else { colorNum = 5; }
+                        }
+                        else if (colorNum == 5)
+                        {
+                            CurrentType = GetNoteTypeForIndex(ColorType, 5, false);
+                            tempInt = RandomInt(1, 3);
+                            if (tempInt == 1) { colorNum = 1; }
+                            else { colorNum = 3; }
+                        }
+                    }
+                    else
+                    {
+                        if (colorNum == 1)
+                        {
+                            CurrentType = GetNoteTypeForIndex(ColorType, 1, false);
+                            tempInt = RandomInt(1, 3);
+                            if (tempInt == 1) { colorNum = 3; }
+                            else { colorNum = 5; }
+                        }
+                        else if (colorNum == 3)
+                        {
+                            CurrentType = GetNoteTypeForIndex(ColorType, 3, false);
+                            colorNum = 1;
+                        }
+                        else if (colorNum == 5)
+                        {
+                            CurrentType = GetNoteTypeForIndex(ColorType, 5, false);
+                            colorNum = 1;
+                        }
+                    }
+                }
+                else//penta
+                {
+                    if (colorNum == 1)
+                    {
+                        CurrentType = GetNoteTypeForIndex(ColorType, 1, false);
+                        colorNum = 3;
+                    }
+                    else if (colorNum == 3)
+                    {
+                        CurrentType = GetNoteTypeForIndex(ColorType, 3, false);
+                        colorNum = 1;
+                    }
+                }
+                
             }
 
             public void triggerNeutral(bool state) { CurrentType = GetNoteTypeForIndex(ColorType, colorNum, state); }
@@ -76,7 +134,6 @@ namespace PentaSaber.ColorManagers
         {
             ColorType currentType = note.noteData.colorType;
             NoteTypeTracker noteTracker = currentType == ColorType.ColorA ? trackerA : trackerB;
-            NoteTypeTracker otherTracker = currentType == ColorType.ColorA ? trackerB : trackerA;
 
             if (noteTracker.timeTracker == 0) { noteTracker.advanceTimeTracker(note); }
             else if (note.noteData.time >= noteTracker.timeTracker) { noteTracker.timeTrigger = true; }
@@ -114,6 +171,9 @@ namespace PentaSaber.ColorManagers
                 (ColorType.ColorA, 2, _) => PentaNoteType.ColorA2,
                 (ColorType.ColorA, 3, true) => PentaNoteType.Neutral,
                 (ColorType.ColorA, 3, false) => PentaNoteType.ColorA2,
+                (ColorType.ColorA, 4, _) => PentaNoteType.ColorA3,
+                (ColorType.ColorA, 5, true) => PentaNoteType.Neutral,
+                (ColorType.ColorA, 5, false) => PentaNoteType.ColorA3,
 
                 (ColorType.ColorB, 0, _) => PentaNoteType.ColorB1,
                 (ColorType.ColorB, 1, true) => PentaNoteType.Neutral,
@@ -121,6 +181,9 @@ namespace PentaSaber.ColorManagers
                 (ColorType.ColorB, 2, _) => PentaNoteType.ColorB2,
                 (ColorType.ColorB, 3, true) => PentaNoteType.Neutral,
                 (ColorType.ColorB, 3, false) => PentaNoteType.ColorB2,
+                (ColorType.ColorB, 4, _) => PentaNoteType.ColorB3,
+                (ColorType.ColorB, 5, true) => PentaNoteType.Neutral,
+                (ColorType.ColorB, 5, false) => PentaNoteType.ColorB3,
 
                 _ => PentaNoteType.None
             };
