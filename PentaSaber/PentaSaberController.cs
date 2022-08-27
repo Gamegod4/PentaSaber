@@ -79,6 +79,10 @@ namespace PentaSaber
         public void Initialize()
         {
             Instance = this;
+            if (PluginConfig.Instance.Enabled)//disable double enable if it is somehow still set at launch
+            {
+                if (PluginConfig.Instance.SeptaEnabled) { PluginConfig.Instance.SeptaEnabled = false; }
+            }
             if(_colorManager.DisableScoreSubmission)
             {
                 BS_Utils.Gameplay.ScoreSubmission.DisableSubmission("PentaSaber");
@@ -130,8 +134,30 @@ namespace PentaSaber
                 Plugin.Log.Error($"WRONG INSTANCE");
                 Instance = this;
             }
-            SaberAType = _inputController.SaberAToggled ? PentaNoteType.ColorA2 : PentaNoteType.ColorA1;
-            SaberBType = _inputController.SaberBToggled ? PentaNoteType.ColorB2 : PentaNoteType.ColorB1;
+            switch (_inputController.SaberAState)
+            {
+                case 0:
+                    SaberAType = PentaNoteType.ColorA1;
+                    break;
+                case 1:
+                    SaberAType = PentaNoteType.ColorA2;
+                    break;
+                case 2:
+                    SaberAType = PentaNoteType.ColorA3;
+                    break;
+            }
+            switch (_inputController.SaberBState)
+            {
+                case 0:
+                    SaberBType = PentaNoteType.ColorB1;
+                    break;
+                case 1:
+                    SaberBType = PentaNoteType.ColorB2;
+                    break;
+                case 2:
+                    SaberBType = PentaNoteType.ColorB3;
+                    break;
+            }
         }
     }
 
@@ -142,6 +168,8 @@ namespace PentaSaber
         ColorB1 = 1,
         ColorA2 = 2,
         ColorB2 = 3,
+        ColorA3 = 5,
+        ColorB3 = 6,
         Neutral = 4
     }
 }
