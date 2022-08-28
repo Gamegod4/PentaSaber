@@ -14,10 +14,10 @@ namespace PentaSaber.InputControllers
         private static int rightFailedTries = 0;
         private static int leftFailedTries = 0;
         public int SaberAState => LeftTriggerActive;
-        public saberControllerObject saberACObject = new saberControllerObject();
+        public saberControllerObject saberACObject = new saberControllerObject(false);
 
         public int SaberBState => RightTriggerActive;
-        public saberControllerObject saberBCObject = new saberControllerObject();
+        public saberControllerObject saberBCObject = new saberControllerObject(true);
         internal InputDevice LeftController
         {
             get
@@ -116,8 +116,8 @@ namespace PentaSaber.InputControllers
                 {
                     if (givenSCO.device.isValid)
                     {
-                        secondaryTriggered = buttonSwitchCases(PluginConfig.Instance.leftSecondaryButtonSelection, givenSCO.device, PluginConfig.Instance.leftSecondaryButtonThreshold);
-                        tertiaryTriggered = buttonSwitchCases(PluginConfig.Instance.leftTertiaryButtonSelection, givenSCO.device, PluginConfig.Instance.leftTertiaryButtonThreshold);
+                        secondaryTriggered = buttonSwitchCases(givenSCO.secondaryButton, givenSCO.device, givenSCO.secondaryThreshold);
+                        tertiaryTriggered = buttonSwitchCases(givenSCO.tertiaryButton, givenSCO.device, givenSCO.tertiaryThreshold);
                         active = secondaryTriggered || tertiaryTriggered;
                     }
 
@@ -177,7 +177,7 @@ namespace PentaSaber.InputControllers
                 {
                     if (givenSCO.device.isValid)
                     {
-                        secondaryTriggered = buttonSwitchCases(PluginConfig.Instance.leftSecondaryButtonSelection, givenSCO.device, PluginConfig.Instance.leftSecondaryButtonThreshold);
+                        secondaryTriggered = buttonSwitchCases(givenSCO.secondaryButton, givenSCO.device, givenSCO.secondaryThreshold);
                         active = secondaryTriggered;
                     }
 
@@ -206,18 +206,18 @@ namespace PentaSaber.InputControllers
                 {
                     if (PluginConfig.Instance.SeptaEnabled)
                     {
-                        if (buttonSwitchCases(PluginConfig.Instance.leftSecondaryButtonSelection, givenSCO.device, PluginConfig.Instance.leftSecondaryButtonThreshold))//secondary
+                        if (buttonSwitchCases(givenSCO.secondaryButton, givenSCO.device, givenSCO.secondaryThreshold))//secondary
                         {
                             stateToReturn = 1;
                         }
-                        else if (buttonSwitchCases(PluginConfig.Instance.leftTertiaryButtonSelection, givenSCO.device, PluginConfig.Instance.leftTertiaryButtonThreshold))//tertiary
+                        else if (buttonSwitchCases(givenSCO.tertiaryButton, givenSCO.device, givenSCO.tertiaryThreshold))//tertiary
                         {
                             stateToReturn = 2;
                         }
                     }
                     else
                     {
-                        if (buttonSwitchCases(PluginConfig.Instance.leftSecondaryButtonSelection, givenSCO.device, PluginConfig.Instance.leftSecondaryButtonThreshold))//secondary
+                        if (buttonSwitchCases(givenSCO.secondaryButton, givenSCO.device, givenSCO.secondaryThreshold))//secondary
                         {
                             stateToReturn = 1;
                         }
@@ -234,9 +234,28 @@ namespace PentaSaber.InputControllers
         public bool saberToggleBoolS = false;
         public bool saberToggleBoolT = false;
         public bool trigPrev = false;
-        public saberControllerObject()
+        public bool leftHand = true;
+        public int secondaryButton = 0;
+        public int tertiaryButton = 0;
+        public float secondaryThreshold = 0;
+        public float tertiaryThreshold = 0;
+        public saberControllerObject(bool isRightHand)
         {
-
+            if (isRightHand) { leftHand = false; }
+            if (leftHand)
+            {
+                secondaryButton = PluginConfig.Instance.leftSecondaryButtonSelection;
+                tertiaryButton = PluginConfig.Instance.leftTertiaryButtonSelection;
+                secondaryThreshold = PluginConfig.Instance.leftSecondaryButtonThreshold;
+                tertiaryThreshold = PluginConfig.Instance.leftTertiaryButtonThreshold;
+            }
+            else
+            {
+                secondaryButton = PluginConfig.Instance.rightSecondaryButtonSelection;
+                tertiaryButton = PluginConfig.Instance.rightTertiaryButtonSelection;
+                secondaryThreshold = PluginConfig.Instance.rightSecondaryButtonThreshold;
+                tertiaryThreshold = PluginConfig.Instance.rightTertiaryButtonThreshold;
+            }
         }
     }
 }
