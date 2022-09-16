@@ -1,4 +1,4 @@
-﻿using PentaSaber.HarmonyPatches.Manager;
+using PentaSaber.HarmonyPatches.Manager;
 using SiraUtil.Sabers;
 using System;
 using System.Collections.Generic;
@@ -21,6 +21,7 @@ namespace PentaSaber
         private readonly IInputController _inputController;
         private readonly SaberManager _saberManager;
         private readonly SaberModelManager _modelManager;
+        private readonly SiraSaberFactory _siraSaberFactory;
 
         private PentaNoteType _saberAType = PentaNoteType.ColorA1;
         public PentaNoteType SaberAType
@@ -41,6 +42,25 @@ namespace PentaSaber
             }
         }
 
+        private PentaNoteType _saberCType = PentaNoteType.ColorA2;
+        public PentaNoteType SaberCType
+        {
+            get => _saberCType;
+            private set
+            {
+                if (_saberCType == value)
+                    return;
+                _saberCType = value;
+                if (SaberC == null)
+                {
+                    Plugin.Log.Error($"SaberC is null");
+                    return;
+                }
+                _modelManager.SetColor(SaberC.Saber, Plugin.Config.GetColor(value));
+                //Plugin.Log.Error($"SaberA is {value} | {SaberAType}");
+            }
+        }
+
         private PentaNoteType _saberBType = PentaNoteType.ColorB1;
 
         public PentaNoteType SaberBType
@@ -57,25 +77,61 @@ namespace PentaSaber
                     return;
                 }
                 _modelManager.SetColor(SaberB, Plugin.Config.GetColor(value));
+                //Plugin.Log.Error($"SaberB is {value} | {SaberBType}");
+            }
+        }
 
+        private PentaNoteType _saberDType = PentaNoteType.ColorB2;
+
+        public PentaNoteType SaberDType
+        {
+            get => _saberDType;
+            private set
+            {
+                if (_saberDType == value)
+                    return;
+                _saberDType = value;
+                if (SaberD == null)
+                {
+                    Plugin.Log.Error($"SaberD is null");
+                    return;
+                }
+                _modelManager.SetColor(SaberD.Saber, Plugin.Config.GetColor(value));
                 //Plugin.Log.Error($"SaberB is {value} | {SaberBType}");
             }
         }
 
         public Saber? SaberA => _saberManager.leftSaber;
+        public SiraSaber? SaberC;
 
         public Saber? SaberB => _saberManager.rightSaber;
+        public SiraSaber? SaberD;
+
+        public SiraSaber createNewSiraSaber(SaberType givenType, Color givenColor)
+        {
+            SiraSaber tempSaber = _siraSaberFactory.Spawn(givenType);
+            if (givenType == SaberType.SaberA) { tempSaber.transform.SetParent(_saberManager.leftSaber.transform); }
+            else { tempSaber.transform.SetParent(_saberManager.rightSaber.transform); }
+            tempSaber.SetColor(givenColor);
+            return tempSaber;
+        }
 
         public PentaSaberController(IPentaColorManager colorManager, IInputController inputController,
-            SaberModelManager modelManager, SaberManager saberManager)
+            SaberModelManager modelManager, SaberManager saberManager, SiraSaberFactory siraSaberFactory)
         {
             Plugin.Log.Debug($"PentaSaberController constructed.");
             _colorManager = colorManager;
             _inputController = inputController;
             _modelManager = modelManager;
             _saberManager = saberManager;
+            _siraSaberFactory = siraSaberFactory;
             HarmonyManager.ApplyDefaultPatches();
         }
+
+        int SaberAID = 0;
+        int SaberBID = 0;
+        int SaberCID = 0;
+        int SaberDID = 0;
         public void Initialize()
         {
             Instance = this;
@@ -83,7 +139,23 @@ namespace PentaSaber
             {
                 if (PluginConfig.Instance.SeptaEnabled) { PluginConfig.Instance.SeptaEnabled = false; }
             }
-            if(_colorManager.DisableScoreSubmission)
+            if (PluginConfig.Instance.maulMode)
+            {
+                if (PluginConfig.Instance.SeptaEnabled) { PluginConfig.Instance.SeptaEnabled = false; }
+                if (PluginConfig.Instance.Enabled)
+                {
+                    SaberC = createNewSiraSaber(SaberType.SaberA, Plugin.Config.GetColor(PentaNoteType.ColorA2));
+                    SaberD = createNewSiraSaber(SaberType.SaberB, Plugin.Config.GetColor(PentaNoteType.ColorB2));
+                }
+                else
+                {
+                    SaberC = createNewSiraSaber(SaberType.SaberA, Plugin.Config.GetColor(PentaNoteType.ColorA1));
+                    _saberCType = PentaNoteType.ColorA1;
+                    SaberD = createNewSiraSaber(SaberType.SaberB, Plugin.Config.GetColor(PentaNoteType.ColorB1));
+                    _saberDType = PentaNoteType.ColorB1;
+                }
+            }
+            if (_colorManager.DisableScoreSubmission)
             {
                 BS_Utils.Gameplay.ScoreSubmission.DisableSubmission("PentaSaber");
                 Plugin.Log.Debug("Disabling score submission.");
@@ -120,12 +192,24 @@ namespace PentaSaber
             };
         }
 
+        public PentaNoteType GetCurrentSaberTypeBySaber(int givenSaber)
+        {
+            if (givenSaber == SaberAID) return SaberAType;
+            else if (givenSaber == SaberBID) return SaberBType;
+            else if (givenSaber == SaberCID) return SaberCType;
+            else if (givenSaber == SaberDID) return SaberDType;
+            else return PentaNoteType.None;
+        }
+
         public void Dispose()
         {
             Plugin.Log.Debug($"Disposing PentaSaberController, {_activeNotes.Count} notes remaining in dictionary.");
             _activeNotes.Clear();
             HarmonyManager.UnpatchAll();
         }
+
+        bool saberCSet = false;
+        bool saberDSet = false;
 
         public void Tick()
         {
@@ -134,29 +218,70 @@ namespace PentaSaber
                 Plugin.Log.Error($"WRONG INSTANCE");
                 Instance = this;
             }
-            switch (_inputController.SaberAState)
+
+            if (SaberA != null && SaberAID == 0)
             {
-                case 0:
-                    SaberAType = PentaNoteType.ColorA1;
-                    break;
-                case 1:
-                    SaberAType = PentaNoteType.ColorA2;
-                    break;
-                case 2:
-                    SaberAType = PentaNoteType.ColorA3;
-                    break;
+                SaberAID = SaberA.GetInstanceID();
             }
-            switch (_inputController.SaberBState)
+            if (SaberB != null && SaberBID == 0)
             {
-                case 0:
-                    SaberBType = PentaNoteType.ColorB1;
-                    break;
-                case 1:
-                    SaberBType = PentaNoteType.ColorB2;
-                    break;
-                case 2:
-                    SaberBType = PentaNoteType.ColorB3;
-                    break;
+                SaberBID = SaberB.GetInstanceID();
+            }
+
+            if (PluginConfig.Instance.maulMode)
+            {
+                if (SaberD != null && SaberB != null && !saberDSet)
+                {
+                    SaberD.transform.position = SaberB.transform.position;
+                    SaberD.transform.position = SaberD.transform.position - new Vector3(0, 0, .10f);
+                    SaberD.transform.rotation = SaberB.transform.rotation;
+                    SaberD.transform.rotation = new Quaternion(0, 1, 0, 0) * SaberD.transform.rotation;
+                    saberDSet = true;
+                }
+                if (SaberC != null && SaberA != null && !saberCSet)
+                {
+                    SaberC.transform.position = SaberA.transform.position;
+                    SaberC.transform.position = SaberC.transform.position - new Vector3(0, 0, .10f);
+                    SaberC.transform.rotation = SaberA.transform.rotation;
+                    SaberC.transform.rotation = new Quaternion(0, 1, 0, 0) * SaberC.transform.rotation;
+                    saberCSet = true;
+                }
+                if (SaberC != null && SaberCID == 0)
+                {
+                    SaberCID = SaberC.Saber.GetInstanceID();
+                }
+                if (SaberD != null && SaberDID == 0)
+                {
+                    SaberDID = SaberD.Saber.GetInstanceID();
+                }
+            }
+
+            if (!PluginConfig.Instance.maulMode)
+            {
+                switch (_inputController.SaberAState)
+                {
+                    case 0:
+                        SaberAType = PentaNoteType.ColorA1;
+                        break;
+                    case 1:
+                        SaberAType = PentaNoteType.ColorA2;
+                        break;
+                    case 2:
+                        SaberAType = PentaNoteType.ColorA3;
+                        break;
+                }
+                switch (_inputController.SaberBState)
+                {
+                    case 0:
+                        SaberBType = PentaNoteType.ColorB1;
+                        break;
+                    case 1:
+                        SaberBType = PentaNoteType.ColorB2;
+                        break;
+                    case 2:
+                        SaberBType = PentaNoteType.ColorB3;
+                        break;
+                }
             }
         }
     }
@@ -170,6 +295,7 @@ namespace PentaSaber
         ColorB2 = 3,
         ColorA3 = 5,
         ColorB3 = 6,
-        Neutral = 4
+        Neutral = 4,
+        Neutral2 = 7
     }
 }
