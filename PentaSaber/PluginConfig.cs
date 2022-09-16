@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,17 +10,20 @@ namespace PentaSaber
     public class PluginConfig
     {
         private static PluginConfig? _instance;
-        
+
         public static PluginConfig Instance
         {
             get => _instance ?? throw new System.InvalidOperationException("PentaConfig instance not yet created.");
             set => _instance = value;
         }
-        
+
         public virtual bool Enabled { get; set; } = false;
         public virtual bool SeptaEnabled { get; set; } = false;
         public virtual bool toggleLockEnabled { get; set; } = false;
         public virtual bool trueRandomSepta { get; set; } = true;
+        public virtual bool maulMode { get; set; } = false;
+        public virtual bool singleColorNeutral { get; set; } = true;
+        public virtual bool neutralOnlyMode { get; set; } = false;
         public virtual int leftSecondaryButtonSelection { get; set; } = 0;
         public virtual float leftSecondaryButtonThreshold { get; set; } = 0.5f;
         public virtual int leftTertiaryButtonSelection { get; set; } = 0;
@@ -39,7 +42,8 @@ namespace PentaSaber
         public virtual Color SaberB1 { get; set; } = colorPresets.Blue;
         public virtual Color SaberB2 { get; set; } = colorPresets.Green;
         public virtual Color SaberB3 { get; set; } = colorPresets.Cyan;
-        public virtual Color Neutral { get; set; } = colorPresets.Gray;
+        public virtual Color NeutralLeft { get; set; } = colorPresets.Gray;
+        public virtual Color NeutralRight { get; set; } = colorPresets.Gray;
 
         public Color GetColor(PentaNoteType pentaNoteType)
         {
@@ -51,7 +55,8 @@ namespace PentaSaber
                 PentaNoteType.ColorB2 => SaberB2,
                 PentaNoteType.ColorA3 => SaberA3,
                 PentaNoteType.ColorB3 => SaberB3,
-                PentaNoteType.Neutral => Neutral,
+                PentaNoteType.Neutral => NeutralLeft,
+                PentaNoteType.Neutral2 => NeutralRight,
                 _ => Color.black
             };
         }
