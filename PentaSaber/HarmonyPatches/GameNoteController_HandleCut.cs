@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,10 +87,10 @@ namespace PentaSaber.HarmonyPatches
             }
             if (controller.TryGetNoteType(gameNote, out var pentaNoteType))
             {
-                PentaNoteType pentaSaberType = controller.GetCurrentSaberType(saber.saberType);
+                PentaNoteType pentaSaberType = controller.GetCurrentSaberTypeBySaber(saber.GetInstanceID());
                 bool isGood = pentaNoteType == pentaSaberType
-                    || pentaNoteType == PentaNoteType.Neutral;
-                //Plugin.Log.Info($"Cutting note '{gameNote.GetInstanceID()}' ({pentaNoteType}) with saber '{pentaSaberType}' - Good: {isGood}");
+                    || pentaNoteType == PentaNoteType.Neutral || pentaNoteType == PentaNoteType.Neutral2;
+                //Plugin.Log.Info($"Cutting note '{gameNote.GetInstanceID()}' ({pentaNoteType}) with saber '{pentaSaberType}' aka '{saber}':'{saber.GetInstanceID()}' - Good: {isGood}");
                 return isGood;
             }
             else
