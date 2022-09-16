@@ -3,6 +3,9 @@
   <bool-setting text='Enable Septa Saber' value='colorChange2-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <bool-setting text='Enable Penta toggle version' value='toggleLock-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <bool-setting text='Septa Saber true random' value='trueRandomSepta-enabled' apply-on-change="true" bind-value="true"></bool-setting>
+  <bool-setting text='Maul mode (base/penta only)' value='maulMode-enabled' apply-on-change="true" bind-value="true"></bool-setting>
+  <bool-setting text='Single neutral color' value='toggleNeutralColors-enabled' apply-on-change="true" bind-value="true"></bool-setting>
+  <bool-setting text='Neutral only mode (requires penta/septa)' value='toggleNeutralOnlyMode-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <horizontal min-width="80">
     <label text="Saber Colors" align="Center"/>
   </horizontal>
@@ -12,7 +15,8 @@
   <color-setting get-event="get" value="UIrightPrimaryColor" text="Right primary color" apply-on-change="true" bind-value="true"/>
   <color-setting get-event="get" value="UIrightSecondaryColor" text="Right secondary color" apply-on-change="true" bind-value="true"/>
   <color-setting get-event="get" value="UIrightTertiaryColor" text="Right tertiary color" apply-on-change="true" bind-value="true"/>
-  <color-setting get-event="get" value="UIneutralColor" text="Neutral block color" apply-on-change="true" bind-value="true"/>
+  <color-setting get-event="get" value="UILeftNeutralColor" text="Neutral block color" apply-on-change="true" bind-value="true"/>
+  <color-setting get-event="get" value="UIRightNeutralColor" text="Right neutral block color" apply-on-change="true" bind-value="true"/>
   <horizontal min-width="80">
     <label text="Button Setup" align="Center"/>
   </horizontal>
