@@ -18,6 +18,7 @@ namespace PentaSaber.ColorManagers
             public float transitionBlockerLength { get; } = 0.05f;
             public int currentNeutralCount = 0;
             public bool timeTrigger = false;
+            public bool firstRun = true;
             public float timeTracker = 0.0f;
             public float baseTimeNum = 0.5f;
             public readonly ColorType ColorType;
@@ -30,10 +31,10 @@ namespace PentaSaber.ColorManagers
                 ColorType = colorType;
                 random = new Random((int)DateTime.Now.Ticks + ((int)colorType * 13));
                 CurrentType = colorType == ColorType.ColorA ? PentaNoteType.ColorA1 : PentaNoteType.ColorB1;
-                neutralBufferNumber = Plugin.Config.neutralBufferNumber;
-                minDuration = Plugin.Config.minDuration;
-                maxDuration = Plugin.Config.maxDuration + 1;//counter random maxout
-                transitionBlockerLength = Plugin.Config.transitionBlockerLength;
+                neutralBufferNumber = PluginConfig.Instance.neutralBufferNumber;
+                minDuration = PluginConfig.Instance.minDuration;
+                maxDuration = PluginConfig.Instance.maxDuration + 1;//counter random maxout
+                transitionBlockerLength = PluginConfig.Instance.transitionBlockerLength;
 
                 if (minDuration <= 0) { minDuration = 1; }
                 if (maxDuration < minDuration) { maxDuration = minDuration + 1; }//counter random maxout
@@ -94,15 +95,18 @@ namespace PentaSaber.ColorManagers
                 }
                 else//penta
                 {
-                    if (colorNum == 1)
+                    if (PluginConfig.Instance.Enabled)
                     {
-                        CurrentType = GetNoteTypeForIndex(ColorType, 1, false);
-                        colorNum = 3;
-                    }
-                    else if (colorNum == 3)
-                    {
-                        CurrentType = GetNoteTypeForIndex(ColorType, 3, false);
-                        colorNum = 1;
+                        if (colorNum == 1)
+                        {
+                            CurrentType = GetNoteTypeForIndex(ColorType, 1, false);
+                            colorNum = 3;
+                        }
+                        else if (colorNum == 3)
+                        {
+                            CurrentType = GetNoteTypeForIndex(ColorType, 3, false);
+                            colorNum = 1;
+                        }
                     }
                 }
                 
@@ -135,26 +139,40 @@ namespace PentaSaber.ColorManagers
             ColorType currentType = note.noteData.colorType;
             NoteTypeTracker noteTracker = currentType == ColorType.ColorA ? trackerA : trackerB;
 
-            if (noteTracker.timeTracker == 0) { noteTracker.advanceTimeTracker(note); }
-            else if (note.noteData.time >= noteTracker.timeTracker) { noteTracker.timeTrigger = true; }
-
-            if (noteTracker.CurrentType != PentaNoteType.Neutral)
+            if (!PluginConfig.Instance.neutralOnlyMode)
             {
-                if ((noteTracker.timeTrigger && note.noteData.timeToPrevColorNote > noteTracker.transitionBlockerLength))
+                if (noteTracker.timeTracker == 0) { noteTracker.advanceTimeTracker(note); }
+                else if (note.noteData.time >= noteTracker.timeTracker) { noteTracker.timeTrigger = true; }
+
+                if (noteTracker.CurrentType != PentaNoteType.Neutral && noteTracker.CurrentType != PentaNoteType.Neutral2)
                 {
-                    noteTracker.triggerColor();
-                    if (noteTracker.neutralBufferNumber == 0) { noteTracker.timeTrigger = false; noteTracker.advanceTimeTracker(note); }
-                    if (noteTracker.neutralBufferNumber > 0) { noteTracker.triggerNeutral(true); noteTracker.currentNeutralCount++; }
+                    if ((noteTracker.timeTrigger && note.noteData.timeToPrevColorNote > noteTracker.transitionBlockerLength))
+                    {
+                        noteTracker.triggerColor();
+                        if (noteTracker.neutralBufferNumber == 0) { noteTracker.timeTrigger = false; noteTracker.advanceTimeTracker(note); }
+                        if (noteTracker.neutralBufferNumber > 0) { noteTracker.triggerNeutral(true); noteTracker.currentNeutralCount++; }
+                    }
+                }
+                else
+                {
+                    if (noteTracker.currentNeutralCount < noteTracker.neutralBufferNumber) { noteTracker.currentNeutralCount++; }
+                    else
+                    {
+                        if (noteTracker.neutralBufferNumber > 0) { noteTracker.currentNeutralCount = 0; noteTracker.triggerNeutral(false); }
+                        noteTracker.timeTrigger = false;
+                        noteTracker.advanceTimeTracker(note);
+                    }
                 }
             }
             else
             {
-                if (noteTracker.currentNeutralCount < noteTracker.neutralBufferNumber) { noteTracker.currentNeutralCount++; }
-                else
+                if (PluginConfig.Instance.Enabled || PluginConfig.Instance.SeptaEnabled)//counters neutral during base
                 {
-                    if (noteTracker.neutralBufferNumber > 0) { noteTracker.currentNeutralCount = 0; noteTracker.triggerNeutral(false); }
-                    noteTracker.timeTrigger = false;
-                    noteTracker.advanceTimeTracker(note);
+                    if (noteTracker.firstRun)
+                    {
+                        noteTracker.triggerNeutral(true);
+                        noteTracker.firstRun = false;
+                    }
                 }
             }
 
@@ -163,7 +181,14 @@ namespace PentaSaber.ColorManagers
 
         private static PentaNoteType GetNoteTypeForIndex(ColorType colorType, int index, bool allowNeutral)
         {
-            PentaNoteType retVal = (colorType, index, allowNeutral) switch
+            PentaNoteType neutralSwitchingNoteType = PentaNoteType.Neutral;
+            if (!PluginConfig.Instance.singleColorNeutral)
+            {
+                neutralSwitchingNoteType = PentaNoteType.Neutral2;
+            }
+
+            PentaNoteType retVal = PentaNoteType.None;
+            retVal = (colorType, index, allowNeutral) switch
             {
                 (ColorType.ColorA, 0, _) => PentaNoteType.ColorA1,
                 (ColorType.ColorA, 1, true) => PentaNoteType.Neutral,
@@ -176,13 +201,13 @@ namespace PentaSaber.ColorManagers
                 (ColorType.ColorA, 5, false) => PentaNoteType.ColorA3,
 
                 (ColorType.ColorB, 0, _) => PentaNoteType.ColorB1,
-                (ColorType.ColorB, 1, true) => PentaNoteType.Neutral,
+                (ColorType.ColorB, 1, true) => neutralSwitchingNoteType,
                 (ColorType.ColorB, 1, false) => PentaNoteType.ColorB1,
                 (ColorType.ColorB, 2, _) => PentaNoteType.ColorB2,
-                (ColorType.ColorB, 3, true) => PentaNoteType.Neutral,
+                (ColorType.ColorB, 3, true) => neutralSwitchingNoteType,
                 (ColorType.ColorB, 3, false) => PentaNoteType.ColorB2,
                 (ColorType.ColorB, 4, _) => PentaNoteType.ColorB3,
-                (ColorType.ColorB, 5, true) => PentaNoteType.Neutral,
+                (ColorType.ColorB, 5, true) => neutralSwitchingNoteType,
                 (ColorType.ColorB, 5, false) => PentaNoteType.ColorB3,
 
                 _ => PentaNoteType.None
