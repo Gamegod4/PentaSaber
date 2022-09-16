@@ -63,11 +63,11 @@ namespace PentaSaber.InputControllers
             switch (buttonSelection)
             {
                 case 0:
-                    { if (givenDevice.TryGetFeatureValue(CommonUsages.trigger, out float value)) { return value > givenThreshold; } break; }//good
+                    { if (givenDevice.TryGetFeatureValue(CommonUsages.trigger, out float value)) { return value > givenThreshold; } break; }
                 case 1:
                     { if (givenDevice.TryGetFeatureValue(CommonUsages.grip, out float value)) { return value > givenThreshold; } break; }
                 case 2:
-                    { if (givenDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool value)) { return value; } break; }//good
+                    { if (givenDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool value)) { return value; } break; }
                 case 3:
                     { if (givenDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool value)) { return value; } break; }
                 default:
@@ -239,6 +239,7 @@ namespace PentaSaber.InputControllers
         public int tertiaryButton = 0;
         public float secondaryThreshold = 0;
         public float tertiaryThreshold = 0;
+
         public saberControllerObject(bool isRightHand)
         {
             if (isRightHand) { leftHand = false; }
