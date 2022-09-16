@@ -35,7 +35,9 @@ namespace PentaSaber
                 if (value)
                 {
                     PluginConfig.Instance.Enabled = false;
+                    PluginConfig.Instance.maulMode = false;
                     NotifyPropertyChanged(nameof(CommandEnabled));
+                    NotifyPropertyChanged(nameof(toggleMaulModeEnabled));
                 }
             }
         }
@@ -52,6 +54,35 @@ namespace PentaSaber
         {
             get => PluginConfig.Instance.trueRandomSepta;
             set => PluginConfig.Instance.trueRandomSepta = value;
+        }
+
+        [UIValue("maulMode-enabled")]
+        private bool toggleMaulModeEnabled
+        {
+            get => PluginConfig.Instance.maulMode;
+            set 
+            {
+                PluginConfig.Instance.maulMode = value;
+                if (value)
+                {
+                    PluginConfig.Instance.SeptaEnabled = false;
+                    NotifyPropertyChanged(nameof(CommandEnabled2));
+                }
+            }
+        }
+
+        [UIValue("toggleNeutralColors-enabled")]
+        private bool toggleNeutralColorsEnabled
+        {
+            get => PluginConfig.Instance.singleColorNeutral;
+            set => PluginConfig.Instance.singleColorNeutral = value;
+        }
+
+        [UIValue("toggleNeutralOnlyMode-enabled")]
+        private bool toggleNeutralOnlyModeEnabled
+        {
+            get => PluginConfig.Instance.neutralOnlyMode;
+            set => PluginConfig.Instance.neutralOnlyMode = value;
         }
 
         [UIValue("leftButton")]
@@ -203,11 +234,18 @@ namespace PentaSaber
             set => PluginConfig.Instance.SaberB3 = value;
         }
 
-        [UIValue("UIneutralColor")]
-        private UnityEngine.Color neutralColor
+        [UIValue("UILeftNeutralColor")]
+        private UnityEngine.Color leftNeutralColor
         {
-            get => PluginConfig.Instance.Neutral;
-            set => PluginConfig.Instance.Neutral = value;
+            get => PluginConfig.Instance.NeutralLeft;
+            set => PluginConfig.Instance.NeutralLeft = value;
+        }
+
+        [UIValue("UIRightNeutralColor")]
+        private UnityEngine.Color rightNeutralColor
+        {
+            get => PluginConfig.Instance.NeutralRight;
+            set => PluginConfig.Instance.NeutralRight = value;
         }
 
         [UIAction("buttonsForm")]
