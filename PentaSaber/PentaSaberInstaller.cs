@@ -1,4 +1,4 @@
-﻿using PentaSaber.ColorManagers;
+using PentaSaber.ColorManagers;
 using PentaSaber.InputControllers;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace PentaSaber
     {
         public override void InstallBindings()
         {
-            if(Plugin.Config.Enabled || Plugin.Config.SeptaEnabled)
+            if(Plugin.Config.Enabled || Plugin.Config.SeptaEnabled || Plugin.Config.maulMode)
             {
                 Plugin.Log?.Debug("Binding dependencies");
                 Container.Bind<IInputController>().To<StandardInputController>().AsTransient();
