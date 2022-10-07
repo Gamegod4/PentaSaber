@@ -13,7 +13,7 @@ This is my attempt to build off of the work that Zingabopp has done to restore t
 -For some reason the colors in game start as Penta saber colors and then after hitting the first block revert to games saber color override/base colors. Maul will stay this way so it is suggested to set the override to the same as your primary colors. Penta and Septa for some reason will fix after switching the color<br/>
 
 ## Required mods
-This mod should only require that you have BSIPA 4.2.2+, BS Utils 1.12.0+, and SiraUtil 3.0.0+
+This mod should only require that you have BSIPA 4.2.2+, BS Utils 1.12.0+, BeatSaberMarkupLanguage 1.6.6+, and SiraUtil 3.0.0+
 
 ## Suggested settings for config
 I have had my settings for neutralBufferNumber set to 0. What this does is disable gray notes completely which I think actually makes the color changes easier to deal with if you're worried about messing up your flow
