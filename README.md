@@ -11,6 +11,7 @@ This is my attempt to build off of the work that Zingabopp has done to restore t
 -Grip and secondary button may not work. This isn't actually an issue. If you are on SteamVR you have to add those buttons with legacy settings. They just need to be added because while they aren't added Steam blocks the button input.<br/>
 -Block colors might not change sometimes. This is likely do to chroma and can be fixed by setting chroma block changing to off<br/>
 -For some reason the colors in game start as Penta saber colors and then after hitting the first block revert to games saber color override/base colors. Maul will stay this way so it is suggested to set the override to the same as your primary colors. Penta and Septa for some reason will fix after switching the color<br/>
+-Room rotation is applied oddly. If you use beat saber's room rotation, pentamaul will have the lower sabers placed incorrectly.. Not sure how to fix and you should orient using a different method. Will attempt to make a fix in the future<br/>
 
 ## Required mods
 This mod should only require that you have BSIPA 4.2.2+, BS Utils 1.12.0+, BeatSaberMarkupLanguage 1.6.6+, and SiraUtil 3.0.0+
