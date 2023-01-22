@@ -29,9 +29,9 @@ I have had my settings for neutral buffer count set to 0. What this does is disa
 ![20220811225925_1](https://user-images.githubusercontent.com/51224222/184283672-2e14a176-fcab-4a3b-adeb-ae8a568b92c7.jpg)
 ![20220811230004_1](https://user-images.githubusercontent.com/51224222/184283682-724207db-59ab-409f-b3a7-8666ab9b06b1.jpg)
 
-Also there is some video examples of gameplay on youtube:
-Penta/Septa Saber mode:
+Also there is some video examples of gameplay on youtube:<br/>
+Penta/Septa Saber mode:<br/>
 https://www.youtube.com/watch?v=y3llz8QnBj4&ab_channel=Gamegod4_tghstreamsandvods
 
-PentaMaul mode:
+PentaMaul mode:<br/>
 https://www.youtube.com/watch?v=ayAmb5KQcyk&ab_channel=Gamegod4_tghstreamsandvods
