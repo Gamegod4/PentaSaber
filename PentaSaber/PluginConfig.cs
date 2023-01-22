@@ -22,6 +22,7 @@ namespace PentaSaber
         public virtual bool toggleLockEnabled { get; set; } = false;
         public virtual bool trueRandomSepta { get; set; } = true;
         public virtual bool maulMode { get; set; } = false;
+        public virtual bool maulFlipBack { get; set; } = false;
         public virtual bool singleColorNeutral { get; set; } = true;
         public virtual bool neutralOnlyMode { get; set; } = false;
         public virtual int leftSecondaryButtonSelection { get; set; } = 0;
