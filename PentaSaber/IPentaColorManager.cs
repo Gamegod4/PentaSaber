@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,5 +27,6 @@ namespace PentaSaber
         /// <param name="currentType"></param>
         /// <returns></returns>
         PentaNoteType GetNextNoteType(GameNoteController currentType);
+        PentaNoteType GetBurstNoteType(BurstSliderGameNoteController currentType);
     }
 }
