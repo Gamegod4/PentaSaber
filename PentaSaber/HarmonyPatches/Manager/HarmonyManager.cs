@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,9 +28,11 @@ namespace PentaSaber.HarmonyPatches.Manager
 
         static HarmonyManager()
         {
-            AddDefaultPatch<GameNoteController_HandleCut>();
+            AddDefaultPatch<GameNoteController_NoteController_HandleCut>();
+            AddDefaultPatch<GameNoteController_BurstSlider_HandleCut>();
             AddDefaultPatch<GameNoteController_NoteDidStartDissolving>();
-            AddDefaultPatch<ColorNoteVisuals_HandleNoteControllerDidInit>();
+            AddDefaultPatch<ColorNoteVisuals_NoteController_HandleNoteControllerDidInit>();
+            AddDefaultPatch<ColorNoteVisuals_BurstSlider_HandleNoteControllerDidInit>();
             AddDefaultPatch<ColorManager_ColorForSaberType>();
         }
 
