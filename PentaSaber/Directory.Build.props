@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- This file contains project properties used by the build. -->
 <Project>
 	<PropertyGroup>
@@ -10,13 +10,12 @@
 		<RequiresBsipa>True</RequiresBsipa>
 		<PluginId>PentaSaber</PluginId>
 		<PluginName>PentaSaber</PluginName>
-		<Authors>Zingabopp modified by Gamegod4</Authors>
-		<Version>1.0.106</Version>
+		<Authors>Gamegod4</Authors>
+		<Version>1.0.107</Version>
 		<GameVersion>1.22.1</GameVersion>
-		<Description>Five different note colors.</Description>
+		<Description>Five/Seven different color notes and a maul mode for more complex plays.</Description>
 		<ProjectSource></ProjectSource>
 		<ProjectHome></ProjectHome>
-		<Donate>https://ko-fi.com/zingabopp</Donate>
 	</PropertyGroup>
 	<ItemGroup>
 		<DependsOn Include="BSIPA" Version="^4.2.2" />
