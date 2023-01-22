@@ -14,8 +14,8 @@ namespace PentaSaber
     {
         public static PentaSaberController? Instance { get; private set; }
 
-        private readonly Dictionary<GameNoteController, PentaNoteType> _activeNotes
-            = new Dictionary<GameNoteController, PentaNoteType>();
+        private readonly Dictionary<GameNoteController, PentaNoteType> _activeNotes = new Dictionary<GameNoteController, PentaNoteType>();
+        private readonly Dictionary<BurstSliderGameNoteController, PentaNoteType> _activeNotesB = new Dictionary<BurstSliderGameNoteController, PentaNoteType>();
 
         private readonly IPentaColorManager _colorManager;
         private readonly IInputController _inputController;
@@ -142,16 +142,18 @@ namespace PentaSaber
             if (PluginConfig.Instance.maulMode)
             {
                 if (PluginConfig.Instance.SeptaEnabled) { PluginConfig.Instance.SeptaEnabled = false; }
-                if (PluginConfig.Instance.Enabled)
+                SaberType saberCType = !PluginConfig.Instance.maulFlipBack? SaberType.SaberA:SaberType.SaberB;//set saber base for if flipped
+                SaberType saberDType = !PluginConfig.Instance.maulFlipBack? SaberType.SaberB:SaberType.SaberA;
+                if (PluginConfig.Instance.Enabled)//back saber flip only requires type switched and then translated
                 {
-                    SaberC = createNewSiraSaber(SaberType.SaberA, Plugin.Config.GetColor(PentaNoteType.ColorA2));
-                    SaberD = createNewSiraSaber(SaberType.SaberB, Plugin.Config.GetColor(PentaNoteType.ColorB2));
+                    SaberC = createNewSiraSaber(saberCType, Plugin.Config.GetColor(PentaNoteType.ColorA2));
+                    SaberD = createNewSiraSaber(saberDType, Plugin.Config.GetColor(PentaNoteType.ColorB2));
                 }
                 else
                 {
-                    SaberC = createNewSiraSaber(SaberType.SaberA, Plugin.Config.GetColor(PentaNoteType.ColorA1));
+                    SaberC = createNewSiraSaber(saberCType, Plugin.Config.GetColor(PentaNoteType.ColorA1));
                     _saberCType = PentaNoteType.ColorA1;
-                    SaberD = createNewSiraSaber(SaberType.SaberB, Plugin.Config.GetColor(PentaNoteType.ColorB1));
+                    SaberD = createNewSiraSaber(saberDType, Plugin.Config.GetColor(PentaNoteType.ColorB1));
                     _saberDType = PentaNoteType.ColorB1;
                 }
             }
@@ -170,9 +172,23 @@ namespace PentaSaber
             return noteType;
         }
 
+        public PentaNoteType SetNoteType(BurstSliderGameNoteController note)
+        {
+            PentaNoteType noteType = _colorManager.GetBurstNoteType(note);
+            _activeNotesB[note] = noteType;
+            return noteType;
+        }
+
         public bool TryGetNoteType(GameNoteController note, out PentaNoteType noteType)
         {
             if(!_activeNotes.TryGetValue(note, out noteType))
+                return false;
+            return true;
+        }
+
+        public bool TryGetNoteType(BurstSliderGameNoteController note, out PentaNoteType noteType)
+        {
+            if (!_activeNotesB.TryGetValue(note, out noteType))
                 return false;
             return true;
         }
@@ -232,17 +248,23 @@ namespace PentaSaber
             {
                 if (SaberD != null && SaberB != null && !saberDSet)
                 {
-                    SaberD.transform.position = SaberB.transform.position;
+                    Transform saberTransform;
+                    if (PluginConfig.Instance.maulFlipBack && SaberA != null) { saberTransform = SaberA.transform; }//use other saber position
+                    else { saberTransform = SaberB.transform; }
+                    SaberD.transform.position = saberTransform.position;
                     SaberD.transform.position = SaberD.transform.position - new Vector3(0, 0, .10f);
-                    SaberD.transform.rotation = SaberB.transform.rotation;
+                    SaberD.transform.rotation = saberTransform.rotation;
                     SaberD.transform.rotation = new Quaternion(0, 1, 0, 0) * SaberD.transform.rotation;
                     saberDSet = true;
                 }
                 if (SaberC != null && SaberA != null && !saberCSet)
                 {
-                    SaberC.transform.position = SaberA.transform.position;
+                    Transform saberTransform;
+                    if (PluginConfig.Instance.maulFlipBack && SaberB != null) { saberTransform = SaberB.transform; }//use other saber position
+                    else { saberTransform = SaberA.transform; }
+                    SaberC.transform.position = saberTransform.position;
                     SaberC.transform.position = SaberC.transform.position - new Vector3(0, 0, .10f);
-                    SaberC.transform.rotation = SaberA.transform.rotation;
+                    SaberC.transform.rotation = saberTransform.rotation;
                     SaberC.transform.rotation = new Quaternion(0, 1, 0, 0) * SaberC.transform.rotation;
                     saberCSet = true;
                 }
