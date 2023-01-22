@@ -41,7 +41,7 @@ namespace PentaSaber.ColorManagers
                 if (neutralBufferNumber < 0) { neutralBufferNumber = 0; }
             }
             public PentaNoteType CurrentType { get; private set; }
-            
+
             private int colorNum = 1;
             public void triggerColor()
             {
@@ -139,43 +139,53 @@ namespace PentaSaber.ColorManagers
             ColorType currentType = note.noteData.colorType;
             NoteTypeTracker noteTracker = currentType == ColorType.ColorA ? trackerA : trackerB;
 
-            if (!PluginConfig.Instance.neutralOnlyMode)
+            if (note.noteData.gameplayType != NoteData.GameplayType.BurstSliderHead)//this makes sure the slider head isn't a different color
             {
-                if (noteTracker.timeTracker == 0) { noteTracker.advanceTimeTracker(note); }
-                else if (note.noteData.time >= noteTracker.timeTracker) { noteTracker.timeTrigger = true; }
-
-                if (noteTracker.CurrentType != PentaNoteType.Neutral && noteTracker.CurrentType != PentaNoteType.Neutral2)
+                if (!PluginConfig.Instance.neutralOnlyMode)
                 {
-                    if ((noteTracker.timeTrigger && note.noteData.timeToPrevColorNote > noteTracker.transitionBlockerLength))
+                    if (noteTracker.timeTracker == 0) { noteTracker.advanceTimeTracker(note); }
+                    else if (note.noteData.time >= noteTracker.timeTracker) { noteTracker.timeTrigger = true; }
+
+                    if (noteTracker.CurrentType != PentaNoteType.Neutral && noteTracker.CurrentType != PentaNoteType.Neutral2)
                     {
-                        noteTracker.triggerColor();
-                        if (noteTracker.neutralBufferNumber == 0) { noteTracker.timeTrigger = false; noteTracker.advanceTimeTracker(note); }
-                        if (noteTracker.neutralBufferNumber > 0) { noteTracker.triggerNeutral(true); noteTracker.currentNeutralCount++; }
+                        if ((noteTracker.timeTrigger && note.noteData.timeToPrevColorNote > noteTracker.transitionBlockerLength))
+                        {
+                            noteTracker.triggerColor();
+                            if (noteTracker.neutralBufferNumber == 0) { noteTracker.timeTrigger = false; noteTracker.advanceTimeTracker(note); }
+                            if (noteTracker.neutralBufferNumber > 0) { noteTracker.triggerNeutral(true); noteTracker.currentNeutralCount++; }
+                        }
+                    }
+                    else
+                    {
+                        if (noteTracker.currentNeutralCount < noteTracker.neutralBufferNumber) { noteTracker.currentNeutralCount++; }
+                        else
+                        {
+                            if (noteTracker.neutralBufferNumber > 0) { noteTracker.currentNeutralCount = 0; noteTracker.triggerNeutral(false); }
+                            noteTracker.timeTrigger = false;
+                            noteTracker.advanceTimeTracker(note);
+                        }
                     }
                 }
                 else
                 {
-                    if (noteTracker.currentNeutralCount < noteTracker.neutralBufferNumber) { noteTracker.currentNeutralCount++; }
-                    else
+                    if (PluginConfig.Instance.Enabled || PluginConfig.Instance.SeptaEnabled)//counters neutral during base
                     {
-                        if (noteTracker.neutralBufferNumber > 0) { noteTracker.currentNeutralCount = 0; noteTracker.triggerNeutral(false); }
-                        noteTracker.timeTrigger = false;
-                        noteTracker.advanceTimeTracker(note);
-                    }
-                }
-            }
-            else
-            {
-                if (PluginConfig.Instance.Enabled || PluginConfig.Instance.SeptaEnabled)//counters neutral during base
-                {
-                    if (noteTracker.firstRun)
-                    {
-                        noteTracker.triggerNeutral(true);
-                        noteTracker.firstRun = false;
+                        if (noteTracker.firstRun)
+                        {
+                            noteTracker.triggerNeutral(true);
+                            noteTracker.firstRun = false;
+                        }
                     }
                 }
             }
 
+            return noteTracker.CurrentType;
+        }
+
+        public PentaNoteType GetBurstNoteType(BurstSliderGameNoteController note)
+        {
+            ColorType currentType = note.noteData.colorType;
+            NoteTypeTracker noteTracker = currentType == ColorType.ColorA ? trackerA : trackerB;
             return noteTracker.CurrentType;
         }
 
