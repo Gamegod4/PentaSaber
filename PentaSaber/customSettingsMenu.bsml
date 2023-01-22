@@ -4,7 +4,7 @@
   <bool-setting text='Enable Penta toggle version' value='toggleLock-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <bool-setting text='Septa Saber true random' value='trueRandomSepta-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <bool-setting text='Maul mode (base/penta only)' value='maulMode-enabled' apply-on-change="true" bind-value="true"></bool-setting>
-  <bool-setting text='Maul flip back sabers' value='maulFlipBack-enabled' apply-on-change="true" bind-value="true"></bool-setting>
+  <bool-setting text='Flipped back maul sabers' value='maulFlipBack-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <bool-setting text='Single neutral color' value='toggleNeutralColors-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <bool-setting text='Neutral only mode (requires penta/septa)' value='toggleNeutralOnlyMode-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <horizontal min-width="80">
