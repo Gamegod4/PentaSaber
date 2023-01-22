@@ -4,6 +4,7 @@
   <bool-setting text='Enable Penta toggle version' value='toggleLock-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <bool-setting text='Septa Saber true random' value='trueRandomSepta-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <bool-setting text='Maul mode (base/penta only)' value='maulMode-enabled' apply-on-change="true" bind-value="true"></bool-setting>
+  <bool-setting text='Maul flip back sabers' value='maulFlipBack-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <bool-setting text='Single neutral color' value='toggleNeutralColors-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <bool-setting text='Neutral only mode (requires penta/septa)' value='toggleNeutralOnlyMode-enabled' apply-on-change="true" bind-value="true"></bool-setting>
   <horizontal min-width="80">
@@ -32,7 +33,10 @@
     <label text="Options" align="Center"/>
   </horizontal>
   <dropdown-list-setting value="transitionButton" text="Transition blocker length" options='P0ToP1TenthChoicesTag' formatter='buttonsP0toP1Form' apply-on-change="true" bind-value="true"/>
+  <slider-setting text='minimum color duration' value='minDur' increment='1' min='0' max='100' integer-only='true' apply-on-change="true" bind-value="true"/>
+  <slider-setting text='maximum color duration' value='maxDur' increment='1' min='0' max='100' integer-only='true' apply-on-change="true" bind-value="true"/>
+  <slider-setting text='neutral buffer count' value='neutralBuff' increment='1' min='0' max='100' integer-only='true' apply-on-change="true" bind-value="true"/>
   <horizontal min-width="40">
-    <label text="-Min/Max + Neutral Setttings in UserData-" align="Center"/>
+    <label text="-Min/Max + Neutral Setttings can be adjusted farther in UserData-" align="Center"/>
   </horizontal>
 </settings-container>
