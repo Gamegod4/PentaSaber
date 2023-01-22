@@ -71,6 +71,46 @@ namespace PentaSaber
             }
         }
 
+        [UIValue("maulFlipBack-enabled")]
+        private bool toggleMaulFlipBackEnabled
+        {
+            get => PluginConfig.Instance.maulFlipBack;
+            set
+            {
+                PluginConfig.Instance.maulFlipBack = value;
+            }
+        }
+
+        [UIValue("minDur")]
+        private int minDurationUIButton
+        {
+            get => PluginConfig.Instance.minDuration;
+            set
+            {
+                PluginConfig.Instance.minDuration = value;
+            }
+        }
+
+        [UIValue("maxDur")]
+        private int maxDurationUIButton
+        {
+            get => PluginConfig.Instance.maxDuration;
+            set
+            {
+                PluginConfig.Instance.maxDuration = value;
+            }
+        }
+
+        [UIValue("neutralBuff")]
+        private int neutralBufferUIButton
+        {
+            get => PluginConfig.Instance.neutralBufferNumber;
+            set
+            {
+                PluginConfig.Instance.neutralBufferNumber = value;
+            }
+        }
+
         [UIValue("toggleNeutralColors-enabled")]
         private bool toggleNeutralColorsEnabled
         {
