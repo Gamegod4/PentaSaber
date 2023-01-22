@@ -1,5 +1,5 @@
 # PentaSaber
-A remake of PentaToggle, the old ChromaToggle game mode and old PentaMaul mode. Each saber has an alternate color activated by pressing trigger. Optional neutral blocks are inserted between transitions to smooth color switches.
+A remake of the old ChromaToggle and PentaMaul game mode. Each saber has an alternate color activated by pressing trigger. Optional neutral blocks are inserted between transitions to smooth color switches.
 
 ## Current version and general note
 Built for 1.22.1, works up to 1.27.0<br/>
