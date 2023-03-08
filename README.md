@@ -25,6 +25,7 @@ I have had my settings for neutral buffer count set to 0. What this does is disa
 -Replay with any game modes enabled will cause oddness. Just disable the mod if you want to look at a replay as it can only really be of normal base gameplay.<br/>
 
 
+![penta game mode small](https://user-images.githubusercontent.com/51224222/223622790-4858c798-90b9-4ecc-a759-ac50bf55de1d.png)
 ![20220811225911_1](https://user-images.githubusercontent.com/51224222/184283666-4898ec5e-de23-4d7d-ab5a-60c75583b3d5.jpg)
 ![20220811225925_1](https://user-images.githubusercontent.com/51224222/184283672-2e14a176-fcab-4a3b-adeb-ae8a568b92c7.jpg)
 ![20220811230004_1](https://user-images.githubusercontent.com/51224222/184283682-724207db-59ab-409f-b3a7-8666ab9b06b1.jpg)
