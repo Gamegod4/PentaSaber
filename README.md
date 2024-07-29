@@ -2,7 +2,7 @@
 A remake of the old ChromaToggle and PentaMaul game mode. Each saber has an alternate color activated by pressing trigger. Optional neutral blocks are inserted between transitions to smooth color switches.
 
 ## Current version and general note
-Built for 1.22.1, works up to 1.27.0<br/>
+Built for 1.22.1, works up to 1.29.1<br/>
 This is my build off of the work that Zingabopp had done to restore this mod. I am not normally a modder, nor do I fully understand everything here all the time, but I have always loved these game modes from the days of ChromaToggle when it was around and have been missing it ever since. After I found out about this remake I just had to make sure to get it working and not let it be left behind. Now I feel that it would be nice if others got to enjoy the mod again, and so here is me restoring what I can.
 
 ## Required mods
