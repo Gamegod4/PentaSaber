@@ -2,11 +2,14 @@
 A remake of the old ChromaToggle and PentaMaul game mode. Each saber has an alternate color activated by pressing trigger. Optional neutral blocks are inserted between transitions to smooth color switches.
 
 ## Current version and general note
-Built for 1.22.1, works up to 1.29.1<br/>
+1.0.102 - 1.0.107 Built for 1.22.1, works up to 1.30.2<br/>
+1.0.108 Built for 1.31.0, works up to current (at least 1.37.1)<br/>
 This is my build off of the work that Zingabopp had done to restore this mod. I am not normally a modder, nor do I fully understand everything here all the time, but I have always loved these game modes from the days of ChromaToggle when it was around and have been missing it ever since. After I found out about this remake I just had to make sure to get it working and not let it be left behind. Now I feel that it would be nice if others got to enjoy the mod again, and so here is me restoring what I can.
 
 ## Required mods
-This mod should only require that you have BSIPA 4.2.2+, BS Utils 1.12.0+, BeatSaberMarkupLanguage 1.6.6+, and SiraUtil 3.0.0+
+This mod should only require that you have<br/>
+1.0.102 - 1.0.107: BSIPA 4.2.2+, BS Utils 1.12.0+, BeatSaberMarkupLanguage 1.6.6+, and SiraUtil 3.0.0+<br/>
+1.0.108+: BSIPA 4.3.0+, BS Utils 1.12.4+, BeatSaberMarkupLanguage 1.7.6+, and SiraUtil 3.1.3+<br/>
 
 ## How to install
 This is a simple mod, just take the PentaSaber.dll file and place it in your Beat Saber/Plugins folder.
