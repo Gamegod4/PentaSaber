@@ -8,7 +8,7 @@ using BeatSaberMarkupLanguage.Attributes;
 
 namespace PentaSaber
 {
-    internal class PentaSettingsUI : BeatSaberMarkupLanguage.Components.NotifiableSingleton<PentaSettingsUI>
+    internal class PentaSettingsUI : BeatSaberMarkupLanguage.Util.NotifiableSingleton<PentaSettingsUI>
     {
         //#pragma warning disable IDE0052 // Remove unread private members
         [UIValue("colorChange-enabled")]
