@@ -1,15 +1,30 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using BeatSaberMarkupLanguage.Attributes;
+using BeatSaberMarkupLanguage.GameplaySetup;
+using Zenject;
 
 namespace PentaSaber
 {
-    internal class PentaSettingsUI : BeatSaberMarkupLanguage.Util.NotifiableSingleton<PentaSettingsUI>
+    internal class PentaSettingsUI : IInitializable, IDisposable, INotifyPropertyChanged
     {
+        public void Initialize()
+        {
+            GameplaySetup.Instance.AddTab("Penta Saber", "PentaSaber.customSettingsMenu.bsml", this);
+        }
+
+        public void Dispose()
+        {
+            GameplaySetup.Instance.RemoveTab("Penta Saber");
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         //#pragma warning disable IDE0052 // Remove unread private members
         [UIValue("colorChange-enabled")]
         private bool CommandEnabled
@@ -367,5 +382,8 @@ namespace PentaSaber
                     return "";
             }
         }
+
+        private void NotifyPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
