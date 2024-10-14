@@ -11,15 +11,15 @@
 		<PluginId>PentaSaber</PluginId>
 		<PluginName>PentaSaber</PluginName>
 		<Authors>Gamegod4</Authors>
-		<Version>1.0.108</Version>
-		<GameVersion>1.31.0</GameVersion>
+		<Version>1.0.109</Version>
+		<GameVersion>1.38.0</GameVersion>
 		<Description>Five/Seven different color notes and a maul mode for more complex plays.</Description>
 		<ProjectSource></ProjectSource>
 		<ProjectHome></ProjectHome>
 	</PropertyGroup>
 	<ItemGroup>
-		<DependsOn Include="BSIPA" Version="^4.3.0" />
-		<DependsOn Include="BS Utils" Version="^1.12.4" />
-		<DependsOn Include="SiraUtil" Version="^3.1.3" />
+		<DependsOn Include="BSIPA" Version="^4.3.5" />
+		<DependsOn Include="BS Utils" Version="^1.14.1" />
+		<DependsOn Include="SiraUtil" Version="^3.1.12" />
 	</ItemGroup>
 </Project>
