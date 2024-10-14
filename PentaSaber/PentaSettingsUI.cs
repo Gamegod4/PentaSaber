@@ -3,13 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 using BeatSaberMarkupLanguage.Attributes;
+using BeatSaberMarkupLanguage.GameplaySetup;
+using Zenject;
 
 namespace PentaSaber
 {
-    internal class PentaSettingsUI : BeatSaberMarkupLanguage.Util.NotifiableSingleton<PentaSettingsUI>
+    internal class PentaSettingsUI : IInitializable, IDisposable, INotifyPropertyChanged
     {
+        public void Initialize()
+        {
+            GameplaySetup.Instance.AddTab("Penta Saber", "PentaSaber.customSettingsMenu.bsml", this);
+        }
+
+        public void Dispose()
+        {
+            GameplaySetup.Instance.RemoveTab("Penta Saber");
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void PropChangeNotice(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
         //#pragma warning disable IDE0052 // Remove unread private members
         [UIValue("colorChange-enabled")]
         private bool CommandEnabled
@@ -21,7 +38,7 @@ namespace PentaSaber
                 if (value)
                 {
                     PluginConfig.Instance.SeptaEnabled = false;
-                    NotifyPropertyChanged(nameof(CommandEnabled2));
+                    PropChangeNotice(nameof(CommandEnabled2));
                 }
             }
         }
@@ -36,8 +53,8 @@ namespace PentaSaber
                 {
                     PluginConfig.Instance.Enabled = false;
                     PluginConfig.Instance.maulMode = false;
-                    NotifyPropertyChanged(nameof(CommandEnabled));
-                    NotifyPropertyChanged(nameof(toggleMaulModeEnabled));
+                    PropChangeNotice(nameof(CommandEnabled));
+                    PropChangeNotice(nameof(toggleMaulModeEnabled));
                 }
             }
         }
@@ -66,7 +83,7 @@ namespace PentaSaber
                 if (value)
                 {
                     PluginConfig.Instance.SeptaEnabled = false;
-                    NotifyPropertyChanged(nameof(CommandEnabled2));
+                    PropChangeNotice(nameof(CommandEnabled2));
                 }
             }
         }
@@ -135,7 +152,7 @@ namespace PentaSaber
                 if (PluginConfig.Instance.leftTertiaryButtonSelection == value)
                 {
                     PluginConfig.Instance.leftTertiaryButtonSelection = 4;
-                    NotifyPropertyChanged(nameof(leftButtonDropdown2));
+                    PropChangeNotice(nameof(leftButtonDropdown2));
                 }
             }
         }
@@ -157,7 +174,7 @@ namespace PentaSaber
                 if (PluginConfig.Instance.leftSecondaryButtonSelection == value)
                 {
                     PluginConfig.Instance.leftSecondaryButtonSelection = 4;
-                    NotifyPropertyChanged(nameof(leftButtonDropdown));
+                    PropChangeNotice(nameof(leftButtonDropdown));
                 }
             }
         }
@@ -182,7 +199,7 @@ namespace PentaSaber
                 if (PluginConfig.Instance.rightTertiaryButtonSelection == value)
                 {
                     PluginConfig.Instance.rightTertiaryButtonSelection = 4;
-                    NotifyPropertyChanged(nameof(rightButtonDropdown2));
+                    PropChangeNotice(nameof(rightButtonDropdown2));
                 }
             }
         }
@@ -204,7 +221,7 @@ namespace PentaSaber
                 if (PluginConfig.Instance.rightSecondaryButtonSelection == value)
                 {
                     PluginConfig.Instance.rightSecondaryButtonSelection = 4;
-                    NotifyPropertyChanged(nameof(rightButtonDropdown));
+                    PropChangeNotice(nameof(rightButtonDropdown));
                 }
             }
         }
