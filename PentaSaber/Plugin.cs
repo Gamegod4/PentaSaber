@@ -1,4 +1,4 @@
-﻿using IPA;
+using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
 using IPA.Loader;
@@ -26,7 +26,7 @@ namespace PentaSaber
             Config = conf.Generated<PluginConfig>();
 
             PluginConfig.Instance = Config;
-            if (PluginConfig.Instance.Enabled)//preventing double enables
+            if (PluginConfig.Instance.Enabled || PluginConfig.Instance.maulMode)//preventing double and maul enables
             {
                 if (PluginConfig.Instance.SeptaEnabled) { PluginConfig.Instance.SeptaEnabled = false; }
             }
@@ -35,9 +35,8 @@ namespace PentaSaber
             zenjector.Install<PentaSaberInstaller>(Location.StandardPlayer);
             zenjector.Install<PentaSaberInstaller>(Location.MultiPlayer);
 
-            BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup.instance.AddTab("Penta Saber", "PentaSaber.customSettingsMenu.bsml", PentaSettingsUI.instance);
+            zenjector.Install(Location.Menu, x => x.BindInterfacesTo<PentaSettingsUI>().AsSingle());//build mod menu
         }
-
 
         [OnStart]
         public void OnApplicationStart()
